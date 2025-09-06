@@ -1,238 +1,96 @@
-Parviz Abdi, [15/06/1404 08:20 ب.ظ]
+Parviz Abdi, [15/06/1404 08:36 ب.ظ]
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GeoCalc V7 — محاسبه‌گر گمانه / چاهک گود / آزمایشات برجا</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GeoCalc V7 — محاسبه‌گر گمانه/چاهک/آزمایشات برجا</title>
 <style>
-/* ========= Design System ========= */
 :root{
-  --bg: #f6f8fc;
-  --surface: #ffffff;
-  --ink: #0b1020;
-  --muted:#6b7280;
-
-  --primary:#2563eb;
-  --primary-2:#60a5fa;
-  --success:#059669;
-  --warn:#f59e0b;
-
-  --border:#e6e8ef;
-  --radius-xl: 22px;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-
-  --shadow-lg: 0 28px 60px rgba(2,6,23,.12);
-  --shadow:   0 16px 40px rgba(2,6,23,.08);
-  --shadow-sm:0 8px 20px rgba(2,6,23,.06);
+  --bg:#f6f8fc; --surface:#fff; --ink:#0b1020; --muted:#6b7280;
+  --primary:#2563eb; --primary-2:#60a5fa; --border:#e6e8ef;
+  --shadow-lg:0 28px 60px rgba(2,6,23,.12); --shadow:0 18px 44px rgba(2,6,23,.08);
+  --shadow-sm:0 8px 20px rgba(2,6,23,.06); --r-xl:22px; --r-lg:16px; --r-md:12px;
 }
-
 *{box-sizing:border-box}
-html,body{height:100%}
 body{
-  margin:0; background:
-    radial-gradient(1100px 520px at 110% -10%, rgba(96,165,250,.18), transparent 60%),
-    radial-gradient(900px 520px at -10% 120%, rgba(125,211,252,.14), transparent 60%),
-    var(--bg);
+  margin:0;background:
+   radial-gradient(1100px 520px at 110% -10%,rgba(96,165,250,.18),transparent 60%),
+   radial-gradient(900px 520px at -10% 120%,rgba(125,211,252,.14),transparent 60%),
+   var(--bg);
   color:var(--ink);
   font:16px/1.75 "Vazirmatn","IRANSans",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
 }
 
-/* ========= Header / Hero ========= */
-.header{
-  position:relative;
-  isolation:isolate;
-  background:linear-gradient(120deg, var(--primary), var(--primary-2));
-  color:#fff;
-  overflow:hidden;
-}
-.header::after{
-  content:""; position:absolute; inset:auto -10% -30% -10%;
-  height:280px; background:radial-gradient(closest-side, rgba(255,255,255,.28), transparent 70%);
-  transform:translateY(-20px);
-}
-.hero{
-  max-width:1200px; margin:0 auto; padding:24px 20px 28px;
-  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
-}
-.brand{
-  display:flex; align-items:center; gap:14px;
-}
-.logo{
-  width:52px; height:52px; display:grid; place-items:center;
-  border-radius:16px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); backdrop-filter:blur(4px);
-  box-shadow:0 10px 24px rgba(0,0,0,.18);
-}
-h1{margin:0; font-size:22px; font-weight:900; letter-spacing:.2px}
-.sub{opacity:.9; font-size:13px}
+/* Header */
+.header{background:linear-gradient(120deg,var(--primary),var(--primary-2));color:#fff;box-shadow:var(--shadow-lg)}
+.hero{max-width:1200px;margin:0 auto;padding:20px 18px 24px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+h1{margin:0;font-size:22px;font-weight:900}
+.sub{opacity:.9;font-size:13px}
 
-/* ========= Layout ========= */
-.container{max-width:1200px; margin:22px auto; padding:0 16px}
-
-/* Responsive two-column shell */
-.shell{
-  display:grid; gap:18px;
-  grid-template-columns: 1.05fr 0.95fr;
-}
-@media (max-width: 1024px){ .shell{grid-template-columns: 1fr} }
-
-/* Section cards */
-.section{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius-xl);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  transform:translateZ(0);
-}
-.section-header{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:14px 18px; border-bottom:1px solid var(--border);
-  background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.75));
-}
-.section-title{margin:0; font-size:17px; font-weight:900; color:#111827}
+/* Layout */
+.container{max-width:1200px;margin:22px auto;padding:0 16px}
+.shell{display:grid;gap:20px;grid-template-columns: 1fr 1fr}
+@media (max-width:1100px){.shell{grid-template-columns:1fr}}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow);overflow:hidden}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff,#f9fbff)}
+.section-title{margin:0;font-size:17px;font-weight:900}
 .section-body{padding:16px}
 
-/* Inputs panel styling */
-.inputs{
-  display:grid; gap:14px;
-  grid-template-columns: repeat(2, minmax(220px,1fr));
-}
-@media (max-width:720px){ .inputs{grid-template-columns:1fr} }
+/* Inputs */
+.inputs{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(240px,1fr))}
+@media (max-width:720px){.inputs{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:800;color:#334155;margin:4px 2px}
+.control{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:var(--r-md);background:#f9fbff;padding:12px 14px;box-shadow:inset 0 2px 6px rgba(0,0,0,.04)}
+input{width:100%;border:0;outline:0;background:transparent;font-weight:800;color:var(--ink);direction:ltr;text-align:right}
+.suffix{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{padding:11px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:900;color:#fff;background:linear-gradient(120deg,#3b82f6,#60a5fa);box-shadow:0 10px 24px rgba(59,130,246,.28)}
+.btn-outline{background:#fff;color:var(--primary);border:2px solid var(--primary);box-shadow:none}
+.note{font-size:12px;color:var(--muted)}
+.err{display:none;margin-top:6px;color:#ef4444;font-size:13px}
 
-label{display:block; font-size:12px; font-weight:800; color:#334155; margin:4px 2px}
-.control{
-  display:flex; align-items:center; gap:10px;
-  background:#f9fbff; border:1px solid var(--border); border-radius:var(--radius-md);
-  padding:12px 14px; box-shadow:inset 0 2px 6px rgba(0,0,0,.04)
-}
-input{
-  width:100%; border:0; outline:0; background:transparent; font-weight:800;
-  color:var(--ink); direction:ltr; text-align:right;
-}
-.suffix{font-size:12px; color:var(--muted)}
-.controls-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px}
-.btn{
-  padding:11px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:900;
-  color:#fff; background:linear-gradient(120deg,#3b82f6,#60a5fa);
-  box-shadow:0 10px 24px rgba(59,130,246,.28); transition:transform .06s ease, filter .06s ease;
-}
-.btn:active{transform:translateY(1px); filter:saturate(1.05)}
-.btn-outline{background:#fff; color:var(--primary); border:2px solid var(--primary); box-shadow:none}
-.note{font-size:12px; color:var(--muted)}
-.err{display:none; margin-top:6px; color:#ef4444; font-size:13px}
+/* KPIs */
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(200px,1fr))}
+@media (max-width:1200px){.kpis{grid-template-columns:repeat(2,minmax(200px,1fr))}}
+@media (max-width:560px){.kpis{grid-template-columns:1fr}}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow-sm)}
+.k{font-size:12px;color:var(--muted)} .v{font-size:26px;font-weight:900;margin-top:6px}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;background:#eff6ff;border:1px solid #dbeafe;color:#1d4ed8;font-size:12px}
 
-Parviz Abdi, [15/06/1404 08:20 ب.ظ]
-/* Quick results – responsive cards */
-.kpis{
-  display:grid; gap:12px;
-  grid-template-columns: repeat(3, minmax(180px,1fr));
-}
-@media (max-width:1024px){ .kpis{grid-template-columns: repeat(2, minmax(180px,1fr))} }
-@media (max-width:560px){ .kpis{grid-template-columns: 1fr} }
+/* Table */
+.table-wrap{overflow:auto;border-radius:16px;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow-sm)}
+table{width:100%;border-collapse:collapse;min-width:740px}
+th,td{padding:12px;border-bottom:1px solid var(--border);text-align:center}
+th{background:#f7f9ff;color:#374151;font-size:13px}
 
-.kpi{
-  background:#fff; border:1px solid var(--border); border-radius:16px; padding:16px;
-  box-shadow:var(--shadow-sm); transition:transform .08s ease;
-}
-.kpi:hover{transform:translateY(-2px)}
-.k{font-size:12px; color:var(--muted)}
-.v{font-size:26px; font-weight:900; color:#0b1020; margin-top:6px}
-.chip{
-  display:inline-block; padding:4px 10px; border-radius:999px;
-  background:#eff6ff; border:1px solid #dbeafe; color:#1d4ed8; font-size:12px
-}
-
-/* Data table */
-.table-wrap{
-  overflow:auto; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow-sm)
-}
-table{width:100%; border-collapse:collapse; min-width:720px}
-th,td{padding:12px; border-bottom:1px solid var(--border); text-align:center}
-th{background:#f7f9ff; color:#374151; font-size:13px}
-
-/* Footer / disclaimer */
-footer{
-  max-width:1200px; margin:22px auto 28px; padding:14px 16px;
-  background:#fff; border:1px dashed #c7d2fe; color:#1f2937;
-  border-radius:16px; box-shadow:var(--shadow-sm); line-height:1.8; font-size:13px
-}
+/* Footer */
+footer{max-width:1200px;margin:22px auto 28px;padding:14px 16px;background:#fff;border:1px dashed #c7d2fe;color:#1f2937;border-radius:16px;box-shadow:var(--shadow-sm);line-height:1.8;font-size:13px}
 footer strong{font-weight:900}
-
-/* Small motion */
-@media (prefers-reduced-motion:no-preference){
-  .fade-in{animation:fade .25s ease both}
-  @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
-}
 </style>
 </head>
 <body>
 
-<!-- Hero -->
 <section class="header">
   <div class="hero">
-    <div class="brand">
-      <div class="logo">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient></defs>
-          <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" stroke="url(#g)" stroke-width="1.8"/>
-        </svg>
-      </div>
-      <div>
-        <h1>محاسبه‌گر گمانه / چاهک گود / آزمایشات برجا (V7) — <span style="font-weight:900">GeoCalc</span></h1>
-        <div class="sub">نسخه‌ی سبک، دقیق و کاملاً ریسپانسیو برای GitHub Pages</div>
-      </div>
+    <div>
+
+Parviz Abdi, [15/06/1404 08:36 ب.ظ]
+<h1>GeoCalc V7 — محاسبه‌گر گمانه / چاهک گود / آزمایشات برجا</h1>
+      <div class="sub">ریسپانسیو، دقیق، و سازگار با ارقام فارسی/ویرگول</div>
     </div>
+    <button id="hardRefresh" class="btn btn-outline" title="پاک‌سازی کش و بارگذاری تازه">بارگذاری تازه</button>
   </div>
 </section>
 
-<main class="container fade-in">
+<main class="container">
   <div class="shell">
-    <!-- Inputs -->
+    <!-- Quick results -->
     <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">ورودی‌ها</h2>
-      </div>
+      <div class="section-header"><h2 class="section-title">نتایج سریع</h2></div>
       <div class="section-body">
-        <div class="inputs">
-          <div>
-            <label for="S">S — سطح اشغال (m²)</label>
-            <div class="control"><input id="S" placeholder="مثلاً 2500" /><span class="suffix">m²</span></div>
-          </div>
-          <div>
-            <label for="D">D — عمق گود، Dmax (m)</label>
-            <div class="control"><input id="D" placeholder="مثلاً 12" /><span class="suffix">m</span></div>
-          </div>
-          <div>
-            <label for="B">B — عرض مؤثر سطح اشغال (m)</label>
-            <div class="control"><input id="B" placeholder="مثلاً 35" /><span class="suffix">m</span></div>
-          </div>
-          <div>
-            <label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label>
-            <div class="control"><input id="F" placeholder="مثلاً 11" /><span class="suffix">طبقه</span></div>
-          </div>
-        </div>
-        <div class="controls-row">
-          <button id="calc" class="btn">محاسبه</button>
-          <button id="reset" class="btn btn-outline">ریست</button>
-          <span class="note">ارقام فارسی/ویرگول هم قابل قبول است (۱۲٬۳۴۵ → 12345).</span>
-        </div>
-        <div id="err" class="err">ورودی‌ها باید اعداد معتبر و غیرمنفی باشند.</div>
-      </div>
-    </section>
-
-    <!-- Quick Results -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">نتایج سریع</h2>
-      </div>
-      <div class="section-body">
-        <p class="note">اعداد به‌صورت زنده با تغییر ورودی‌ها به‌روز می‌شوند.</p>
         <div class="kpis">
-
-Parviz Abdi, [15/06/1404 08:20 ب.ظ]
-<div class="kpi"><div class="k">عمق از تراز شروع حفاری</div><div class="v" id="v_start">–</div></div>
+          <div class="kpi"><div class="k">عمق از تراز شروع حفاری</div><div class="v" id="v_start">–</div></div>
           <div class="kpi"><div class="k">عمق از تراز زیرِپی</div><div class="v" id="v_found">–</div></div>
           <div class="kpi"><div class="k">حداقل تعداد گمانه‌ها</div><div class="v" id="v_bh">–</div></div>
           <div class="kpi"><div class="k">حداقل تعداد چاهک گود</div><div class="v" id="v_hs">–</div></div>
@@ -241,18 +99,35 @@ Parviz Abdi, [15/06/1404 08:20 ب.ظ]
           <div class="kpi"><div class="k">دان‌هول (در صورت F≥11)</div><div class="v" id="v_dh">–</div></div>
         </div>
         <p class="note" style="margin-top:10px">
-          الزام زیرجدول: حداقل یک گمانه باید <span class="chip">۳۰ متر زیرِ تراز فونداسیون</span> باشد.
+          الزام: حداقل یک گمانه باید <span class="chip">۳۰ متر زیر تراز فونداسیون</span> باشد.
           طرح عمق گمانه‌ها: <span id="planChip" class="chip">—</span>
         </p>
+      </div>
+    </section>
+
+    <!-- Inputs -->
+    <section class="section">
+      <div class="section-header"><h2 class="section-title">ورودی‌ها</h2></div>
+      <div class="section-body">
+        <div class="inputs">
+          <div><label for="S">S — سطح اشغال (m²)</label><div class="control"><input id="S" inputmode="decimal" autocomplete="off" placeholder="مثلاً 1200"/><span class="suffix">m²</span></div></div>
+          <div><label for="D">D — عمق گود، Dmax (m)</label><div class="control"><input id="D" inputmode="decimal" autocomplete="off" placeholder="مثلاً 12"/><span class="suffix">m</span></div></div>
+          <div><label for="B">B — عرض مؤثر سطح اشغال (m)</label><div class="control"><input id="B" inputmode="decimal" autocomplete="off" placeholder="مثلاً 35"/><span class="suffix">m</span></div></div>
+          <div><label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label><div class="control"><input id="F" inputmode="numeric" autocomplete="off" placeholder="مثلاً 11"/><span class="suffix">طبقه</span></div></div>
+        </div>
+        <div class="row">
+          <button id="calc" class="btn">محاسبه</button>
+          <button id="reset" class="btn btn-outline">ریست</button>
+          <span class="note">ارقام فارسی/ویرگول هم قابل قبول است (۱۲٬۳۴۵ → 12345).</span>
+        </div>
+        <div id="err" class="err">ورودی‌ها باید اعداد معتبر و غیرمنفی باشند.</div>
       </div>
     </section>
   </div>
 
   <!-- Data details -->
-  <section class="section" style="margin-top:18px">
-    <div class="section-header">
-      <h2 class="section-title">جزئیات داده‌ها</h2>
-    </div>
+  <section class="section" style="margin-top:20px">
+    <div class="section-header"><h2 class="section-title">جزئیات داده‌ها</h2></div>
     <div class="section-body">
       <div class="table-wrap">
         <table>
@@ -270,9 +145,28 @@ Parviz Abdi, [15/06/1404 08:20 ب.ظ]
 </footer>
 
 <script>
-/* === Persian/Arabic digits & commas → Number === */
+/* --- SW cache nudge (برای رفع مشکل موبایل با نسخه قدیمی) --- */
+(async function refreshSW(){
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      regs.forEach(r=>r.update().catch(()=>{}));
+    }
+    if('caches' in window){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => (/geocalc/i.test(k)? caches.delete(k):null)));
+    }
+  }catch(e){}
+})();
+document.
+
+Parviz Abdi, [15/06/1404 08:36 ب.ظ]
+getElementById('hardRefresh').onclick = ()=>location.reload(true);
+
+/* --- Persian/Arabic digits → number --- */
 const fa=/[۰-۹]/g, ar=/[٠-٩]/g;
-const maps={fa:{'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵':5,'۶':6,'۷':7,'۸':8,'۹':9}, ar:{'٠':0,'١':1,'٢':2,'٣':3,'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9}};
+const maps={fa:{'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵':5,'۶':6,'۷':7,'۸':8,'۹':9},
+            ar:{'٠':0,'١':1,'٢':2,'٣':3,'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9}};
 function toNumber(v){
   if(v==null) return NaN;
   let s=String(v).trim().replace(/\s+/g,'').replace(/,/g,'').replace(/٬/g,'');
@@ -280,11 +174,11 @@ function toNumber(v){
   return Number(s);
 }
 
-/* === Core logic (V7) === */
-function kB(S){ return (S<=300)?2:(S<=1000?1.5:1); }
-function N(S){ return (S>1000)? 2*Math.ceil((S-1000)/1000) : 0; }   // +2 per 1000 above 1000
-function M(D){ return (D>20)? Math.ceil((D-20)/10) : 0; }           // +1 per 10 above 20
-function boreholes(S){ return (S<=300?2:3) + N(S); }
+/* --- Core logic (V7) --- */
+function kB(S){return (S<=300)?2:(S<=1000?1.5:1);}
+function N(S){return (S>1000)?2*Math.ceil((S-1000)/1000):0;}
+function M(D){return (D>20)?Math.ceil((D-20)/10):0;}
+function boreholes(S){return (S<=300?2:3)+N(S);}
 function handshafts(S,D){
   const n=N(S), m=M(D);
   if(S<=300){ if(D>10) return 2; return 1; }
@@ -292,25 +186,22 @@ function handshafts(S,D){
   if(D>20) return 3+n+m; if(D>10) return 3+n; return 2+n;
 }
 function insitu(D){ if(D<7) return 0; if(D<=10) return 1; return 2; }
-function downhole(F,bh){ return (F>=11)? Math.ceil(bh/3) : 0; }
+function downhole(F,bh){ return (F>=11)?Math.ceil(bh/3):0; }
 
-/* Depth plan from start: ensure ≥ (D + 30) for ≥1 BH */
+/* طرح عمق گمانه‌ها: حداقل ۱ گمانه = (D + 30) از تراز شروع حفاری */
 function depthPlanFromStart(baseDepth, count, thresholdFromStart){
   const arr=[]; for(let i=0;i<count;i++) arr.push(Number(baseDepth.toFixed(2)));
   if(count>0){ arr[0]=Number(Math.max(baseDepth, thresholdFromStart).toFixed(2)); }
-  const map=new Map();
-  arr.forEach(d=>{const k=d.toFixed(2); map.set(k,(map.get(k)||0)+1);});
+  const map=new Map(); arr.forEach(d=>{const k=d.toFixed(2); map.set(k,(map.get(k)||0)+1);});
   const summary=[...map.entries()].sort((a,b)=>Number(b[0])-Number(a[0]))
                  .map(([k,c])=>`${c}×${Number(k)} m`).join('، ');
-  return {summary, enforced: baseDepth<thresholdFromStart, thresholdFromStart:Number(thresholdFromStart.toFixed(2))};
+  return {summary, thresholdFromStart:Number(thresholdFromStart.toFixed(2)), enforced: baseDepth<thresholdFromStart};
 }
 
-/* === DOM & render === */
+/* --- DOM & render --- */
 const $=id=>document.getElementById(id);
 const inputs=['S','D','B','F'].map($);
-const els={start:$('v_start'), found:$('v_found'), bh:$('v_bh'), hs:$('v_hs'),
-           shear:$('v_shear'), plate:$('v_plate'), dh:$('v_dh'),
-           tb:$('tbody'), planChip:$('planChip')};
+const els={start:$('v_start'),found:$('v_found'),bh:$('v_bh'),hs:$('v_hs'),shear:$('v_shear'),plate:$('v_plate'),dh:$('v_dh'),tb:$('tbody'),planChip:$('planChip'),err:$('err')};
 
 function calc(){
   const S=toNumber($('S').value), D=toNumber($('D').value), B=toNumber($('B').value), F=toNumber($('F').value);
@@ -318,17 +209,15 @@ function calc(){
   const kb=kB(S);
   const startBase=Number((kb*B + D).toFixed(2));
   const found=Number((kb*B).toFixed(2));
-
-Parviz Abdi, [15/06/1404 08:20 ب.ظ]
-const bh=boreholes(S), hs=handshafts(S,D), t=insitu(D), dh=downhole(F,bh);
-  const thresholdFromStart = D + 30; // 30 m زیر تراز فونداسیون
+  const bh=boreholes(S), hs=handshafts(S,D), t=insitu(D), dh=downhole(F,bh);
+  const thresholdFromStart = D + 30;
   const plan=depthPlanFromStart(startBase, bh, thresholdFromStart);
-  return {S,D,B,F,kb,start:startBase,found,bh,hs,shear:t,plate:t,dh,N:N(S),M:M(D), plan};
+  return {S,D,B,F,kb,start:startBase,found,bh,hs,shear:t,plate:t,dh,N:N(S),M:M(D),plan};
 }
 
 function render(){
   try{
-    const r=calc(); $('err').style.display='none';
+    const r=calc(); els.err.style.display='none';
     els.start.textContent=r.start+" m";
     els.found.textContent=r.found+" m";
     els.bh.textContent=r.bh; els.hs.textContent=r.hs;
@@ -340,29 +229,28 @@ function render(){
       ["N",  r.N,  "هر ۱۰۰۰m² بالای ۱۰۰۰ ⇒ +۲ گمانه"],
       ["M",  r.M,  "هر ۱۰m بالای ۲۰ ⇒ +۱ چاهک"],
       ["عمق از تراز شروع حفاری (پایه)", r.start+" m", "kB×B + D"],
-      ["آستانه الزام از تراز شروع حفاری", r.plan.thresholdFromStart+" m", "D + 30 (۳۰ m زیر تراز فونداسیون)"],
+      ["آستانه الزام از تراز شروع حفاری", r.plan.thresholdFromStart+" m", "D + 30 (۳۰m زیر تراز فونداسیون)"],
       ["عمق از تراز زیرِپی", r.found+" m", "kB×B"],
       ["حداقل تعداد گمانه‌ها", r.bh, "طبق جدول + N"],
       ["حداقل تعداد چاهک گود", r.hs, "طبق جدول + M (اگر D>20)"],
       ["طرح عمق گمانه‌ها", r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
       ["آزمایش برش برجا (تعداد)", r.shear, "D<7→0 ، 7–10→1 ، >10→2"],
-      ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط برش برجا"],
+      ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط"],
       ["دان‌هول (در صورت F≥11)", r.dh, "ceil(گمانه/3)"]
     ];
-    els.tb.innerHTML='';
-    rows.forEach(rw=>{
-      const tr=document.createElement('tr');
-      rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);});
-      els.tb.appendChild(tr);
-    });
-  }catch(e){
-    $('err').style.display='block';
-  }
+    els.tb.innerHTML=''; rows.forEach(rw=>{const tr=document.createElement('tr'); rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);}); els.tb.appendChild(tr);});
+  }catch(e){ els.err.style.display='block'; }
 }
 
+/* رویدادها: desktop & mobile */
+
+Parviz Abdi, [15/06/1404 08:36 ب.ظ]
+['input','change','keyup'].forEach(ev=>{
+  inputs.forEach(i=> i.addEventListener(ev, (e)=>{ if(ev==='keyup' && e.key!=='Enter') return; render(); }));
+});
 $('calc').addEventListener('click', render);
 $('reset').addEventListener('click', ()=>{ inputs.forEach(i=>i.value=''); render(); });
-inputs.forEach(i=> i.addEventListener('input', render));
+
 render();
 </script>
 </body>

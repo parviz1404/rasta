@@ -1,0 +1,99 @@
+Parviz Abdi, [15/06/1404 03:06 ب.ظ]
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ماشین‌حساب گمانه | رستا</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#00a7b7" />
+  <!-- آیکن برای iOS (اختیاری: اگر فایل icon-192.png گذاشتی) -->
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;background:#f7fafc;color:#0a2a4a;margin:0}
+    .wrap{max-width:900px;margin:24px auto;padding:16px}
+    h1{font-size:20px;margin:0 0 8px}
+    .card{background:#fff;border:1px solid #e6edf5;border-radius:14px;padding:14px 16px;margin:12px 0;box-shadow:0 8px 16px rgba(0,0,0,.04)}
+    label{font-weight:600;font-size:14px}
+    input{width:100%;padding:10px;border:1px solid #d7dde8;border-radius:10px;background:#fbfdff}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{background:#00a7b7;color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
+    .res{border:2px dashed #00a7b7;border-radius:12px;background:#f0fbfd;padding:12px;margin-top:10px}
+    .muted{color:#445;opacity:.85;font-size:13px;line-height:1.9}
+    small{opacity:.75}
+    footer{font-size:12px;color:#556;opacity:.9;margin-top:6px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ماشین‌حساب تعیین تعداد و عمق گمانه</h1>
+  <small>بر اساس ساختار جدول ابلاغی سازمان نظام مهندسی استان تهران</small>
+
+  <div class="card grid">
+    <div><label>سطح اشغال S (m²)</label><input id="S" type="number" placeholder="مثلاً 420"></div>
+    <div><label>عمق گود D (m)</label><input id="D" type="number" placeholder="مثلاً 6" step="0.1"></div>
+    <div><label>بعد مشخصه پی B (m)</label><input id="B" type="number" placeholder="مثلاً 1.5" step="0.1"></div>
+    <div><label>پارامترها (N,M,Dtr)</label><input id="P" value="N=0,M=0,Dtr=0"></div>
+  </div>
+
+  <button class="btn" onclick="calc()">محاسبه</button>
+  <div id="out" class="res" style="display:none"></div>
+
+  <div class="card">
+    <b>توضیحات مختصر</b>
+    <p class="muted">
+      عمق هر گمانه بر اساس فرمول سلول انتخابی محاسبه می‌شود (مثل <b>2B + Dtr</b>، <b>1.5B + Dtr</b>، <b>B + Dtr</b>).
+      حداقل تعداد گمانه با توجه به بازهٔ سطح اشغال و عمق گود از جدول خوانده می‌شود (۲، ۳، یا <b>۳+N</b> / <b>۳+M+N</b> برای قطعات بزرگ).
+      برای گودهای عمیق (D&gt;10m) معمولاً <b>PLT/چاهک</b> اجباری است.
+    </p>
+    <footer>توجه: این ابزار راهنماست؛ تصمیم نهایی با مسئول فنی پروژه است.</footer>
+  </div>
+</div>
+
+<script>
+  // رجیستر سرویس‌ورکر برای نصب به‌عنوان وب‌اپ و کار آفلاین
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', ()=> navigator.serviceWorker.register('./sw.js'));
+  }
+
+  // منطق محاسبه (خلاصه‌شده از جدول)
+  const Sbins=[{k:"S0_300",min:0,max:300},{k:"S300_1000",min:300,max:1000},{k:"S1000_up",min:1000,max:1e9}];
+  function binS(S){for(const b of Sbins){if(S>b.min && S<=b.max) return b.k}return "S1000_up"}
+  function binD(D){if(D<=1)return"D_le_1";if(D<=10)return"D_1_10";if(D<=20)return"D_10_20";return"D_gt_20"}
+  const table={
+    "S0_300":{"D_le_1":{depth:"2B + Dtr",minBH:"2",pits:"1",plt:"در صورت نیاز"},
+              "D_1_10":{depth:"2B + Dtr",minBH:"2",pits:"2B",plt:"در صورت نیاز"},
+              "D_10_20":{depth:"2B + Dtr",minBH:"2",pits:"2B",plt:"اجباری"},
+              "D_gt_20":{depth:"2B + Dtr",minBH:"3",pits:"2B",plt:"اجباری"}},
+    "S300_1000":{"D_le_1":{depth:"1.5B + Dtr",minBH:"3",pits:"2B",plt:"در صورت نیاز"},
+                 "D_1_10":{depth:"1.5B + Dtr",minBH:"3",pits:"2B",plt:"در صورت نیاز"},
+                 "D_10_20":{depth:"1.5B + Dtr",minBH:"3",pits:"2B",plt:"اجباری"},
+                 "D_gt_20":{depth:"1.5B + Dtr",minBH:"3",pits:"2B",plt:"اجباری"}},
+    "S1000_up":{"D_le_1":{depth:"B + Dtr",minBH:"3+N",pits:"B",plt:"اگر Dmax ≥ 7 باشد"},
+                "D_1_10":{depth:"B + Dtr",minBH:"3+N",pits:"B",plt:"اگر Dmax ≥ 7 باشد"},
+                "D_10_20":{depth:"B + Dtr",minBH:"3+M+N",pits:"B",plt:"اجباری"},
+
+Parviz Abdi, [15/06/1404 03:06 ب.ظ]
+"D_gt_20":{depth:"B + Dtr",minBH:"3+M+N",pits:"B",plt:"اجباری"}}
+  };
+  function parseP(s){const o={N:0,M:0,Dtr:0};s.split(",").forEach(p=>{const[k,v]=p.split("=").map(x=>x.trim());if(o.hasOwnProperty(k))o[k]=parseFloat(v)||0});return o}
+  function evalDepth(expr,B,Dtr){return expr.replace(/B/g,B).replace(/Dtr/g,Dtr)}
+  function calc(){
+    const S=parseFloat(document.getElementById('S').value||"0");
+    const D=parseFloat(document.getElementById('D').value||"0");
+    const B=parseFloat(document.getElementById('B').value||"0");
+    const P=parseP(document.getElementById('P').value||"");
+    const cell=table[binS(S)][binD(D)];
+    const minBH=cell.minBH.replace("N",P.N).replace("M",P.M);
+    const depthText=evalDepth(cell.depth,B,P.Dtr);
+    const out=document.getElementById('out'); out.style.display='block';
+    out.innerHTML=`<b>حداقل تعداد گمانه:</b> ${minBH}<br>
+                   <b>عمق پیشنهادی هر گمانه:</b> ${depthText}<br>
+                   <b>حداقل چاهک/پیت:</b> ${cell.pits} — <b>PLT:</b> ${cell.plt}`;
+  }
+</script>
+</body>
+</html>

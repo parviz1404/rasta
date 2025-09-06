@@ -1,4 +1,3 @@
-Parviz Abdi, [15/06/1404 07:01 ب.ظ]
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,423 +5,202 @@ Parviz Abdi, [15/06/1404 07:01 ب.ظ]
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GeoCalc V7 — محاسبه‌گر گمانه/چاهک/آزمایش برجا</title>
 
-  <!-- PWA -->
-  <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" href="./icon-192.png" sizes="192x192" />
-  <link rel="icon" href="./icon-512.png" sizes="512x512" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="GeoCalc V7" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
-
+  <meta name="theme-color" content="#2563eb" />
   <style>
-    :root{
-      --bg: #0b1020;        /* slate-950 */
-      --panel:#0f172a;      /* slate-900 */
-      --panel-2:#111a32;    /* custom dark */
-      --fg:#e6edf6;         /* stone-50 */
-      --muted:#9fb0c7;      /* slate-400 */
-      --brand:#7dd3fc;      /* sky-300 */
-      --brand-2:#60a5fa;    /* blue-400 */
-      --ok:#10b981;         /* emerald-500 */
-      --warn:#f59e0b;       /* amber-500 */
-      --err:#ef4444;        /* red-500 */
-      --border: #1f2a44;    /* slate ~700 */
-      --chip:#1b2542;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius:16px;
+    body {
+      font-family: 'Segoe UI', 'Vazirmatn', Tahoma, sans-serif;
+      margin: 0;
+      background: #f3f4f6;
+      color: #111827;
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f6f7fb; --panel:#ffffff; --panel-2:#ffffff;
-        --fg:#0b1020; --muted:#667085; --border:#e6e8ef;
-        --chip:#f1f5f9; --shadow:0 16px 40px rgba(2,6,23,.08);
-      }
+    header {
+      background: linear-gradient(90deg,#2563eb,#3b82f6);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,.1);
     }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:
-        radial-gradient(1200px 600px at 110% -10%, rgba(96,165,250,.12), transparent 60%),
-        radial-gradient(1000px 600px at -10% 110%, rgba(125,211,252,.12), transparent 60%),
-        var(--bg);
-      color:var(--fg);
-      font:16px/1.65 Inter, IRANSans, Vazirmatn, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 700;
     }
-
-    .wrap{max-width:1120px;margin:24px auto;padding:24px}
-    .shell{
-      background:linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-      border:1px solid var(--border); border-radius:var(--radius);
-      box-shadow:var(--shadow); overflow:hidden;
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:18px 22px; border-bottom:1px solid var(--border);
-      background:
-        linear-gradient(90deg, rgba(96,165,250,.12), rgba(125,211,252,.0));
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
     }
-    .brand{
-      display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px;
+    h2 { margin-top: 0; color:#2563eb }
+    label { display:block; font-weight:600; margin:.5rem 0 .25rem }
+    input {
+      width:100%; padding:.6rem .8rem;
+      border:1px solid #d1d5db; border-radius:8px;
+      font-size:1rem;
     }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px; background:var(--chip);
-      border:1px solid var(--border); border-radius:999px; font-size:12px; color:var(--muted)
+    input:focus {
+      outline:2px solid #3b82f6; border-color:#3b82f6;
     }
-    .grid{
-      display:grid; gap:18px; padding:22px;
-      grid-template-columns: 1.15fr .85fr;
+    .grid {
+      display:grid; gap:1rem;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     }
-    @media (max-width: 980px){ .grid{grid-template-columns: 1fr} }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
-      border:1px solid var(--border); border-radius:14px; padding:18px;
+    table {
+      width:100%; border-collapse:collapse; margin-top:1rem;
     }
-    h2{margin:0 0 10px; font-size:18px}
-    .muted{color:var(--muted)}
-    .inputs{display:grid; grid-template-columns:repeat(2,minmax(160px,1fr)); gap:14px}
-    @media (max-width:700px){ .inputs{grid-template-columns: 1fr} }
-
-    label{font-weight:700; font-size:13px; color:var(--muted); display:block; margin-bottom:6px}
-    .control{
-      position:relative;
-      background:#0d142a0e; border:1px solid var(--border); border-radius:12px;
-      display:flex; align-items:center; overflow:hidden;
+    th,td {
+      padding:.75rem; border-bottom:1px solid #e5e7eb; text-align:center;
     }
-    input{
-      width:100%; padding:12px 14px; background:transparent; border:0; outline:0; color:var(--fg);
-      font-weight:700; direction:ltr; text-align:right;
+    th { background:#f9fafb; color:#374151 }
+    .results {
+      display:grid; gap:1rem;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      margin-top:1rem;
     }
-    .suffix{padding:0 12px; color:var(--muted); font-size:12px}
-    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
-    .btn{
-      appearance:none; border:0; border-radius:12px; padding:12px 16px; font-weight:900; cursor:pointer;
-
-Parviz Abdi, [15/06/1404 07:01 ب.ظ]
-background:linear-gradient(135deg, var(--brand-2), var(--brand)); color:#0b1020;
-      box-shadow:0 10px 24px rgba(96,165,250,.25);
+    .res {
+      background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px;
+      padding:1rem; text-align:center;
     }
-    .btn.secondary{
-      background:transparent; color:var(--fg); border:1px solid var(--border);
+    .res .val { font-size:1.4rem; font-weight:700; color:#111827 }
+    .btn {
+      padding:.7rem 1.2rem; border:0; border-radius:8px;
+      font-weight:700; cursor:pointer; font-size:1rem;
     }
-    .tips{display:flex; gap:8px; flex-wrap:wrap}
-    .chip{
-      background:var(--chip); color:var(--muted); border:1px solid var(--border);
-      padding:6px 10px; border-radius:999px; font-size:12px
+    .btn-primary {
+      background:#2563eb; color:white;
     }
-    .danger{color:var(--err)} .ok{color:var(--ok)} .warn{color:var(--warn)}
-
-    .results{display:grid; gap:14px}
-    .resgrid{display:grid; gap:12px; grid-template-columns:repeat(2,minmax(140px,1fr))}
-    @media (max-width:700px){ .resgrid{grid-template-columns: 1fr} }
-
-    .res{
-      border:1px solid var(--border); border-radius:12px; padding:14px; background:rgba(255,255,255,.02)
+    .btn-secondary {
+      background:white; color:#2563eb; border:2px solid #2563eb;
     }
-    .res .k{font-size:12px; color:var(--muted)}
-    .res .v{font-size:22px; font-weight:900; margin-top:4px}
-    .hl{color:var(--brand)}
-
-    .table{overflow:auto}
-    table{width:100%; border-collapse:collapse; min-width:520px}
-    th, td{border-bottom:1px solid var(--border); padding:10px 8px; text-align:center}
-    th{color:var(--muted); font-weight:700}
-
-    .toolbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
-    .small{font-size:12px}
-    .toast{
-      position:fixed; inset-inline-start:24px; inset-block-end:24px; z-index:50;
-      background:#111827; color:#fff; padding:10px 14px; border-radius:12px; opacity:0; transform:translateY(12px);
-      transition:all .25s ease; box-shadow:0 12px 32px rgba(0,0,0,.35)
-    }
-    .toast.show{opacity:1; transform:translateY(0)}
+    .toolbar { margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap }
+    footer { text-align:center; padding:1rem; color:#6b7280; font-size:.85rem }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="shell">
-      <header>
-        <div class="brand">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" stroke="url(#g)" stroke-width="1.6" />
-            <defs><linearGradient id="g" x1="0" x2="24" y1="0" y2="24"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient></defs>
-          </svg>
-          <div>GeoCalc <span class="hl">V7</span></div>
-          <span class="badge">گمانه / چاهک / برجا / دان‌هول</span>
-        </div>
-        <div class="tips">
-          <span class="chip">PWA</span>
-          <span class="chip">Offline</span>
-          <span class="chip">RTL</span>
-        </div>
-      </header>
+  <header><h1>GeoCalc V7 — محاسبه‌گر ژئوتکنیک</h1></header>
 
+  <div class="container">
+    <div class="card">
+      <h2>ورودی‌ها</h2>
       <div class="grid">
-        <!-- Inputs -->
-        <section class="card">
-          <h2>ورودی‌ها</h2>
-          <p class="muted small">اعداد را بر حسب متر و مترمربع وارد کنید. محاسبه به‌صورت زنده انجام می‌شود.</p>
+        <div><label>S — سطح اشغال (m²)</label><input id="S" type="number" placeholder="مثلاً 2500"></div>
+        <div><label>D — عمق گود Dmax (m)</label><input id="D" type="number" placeholder="مثلاً 27"></div>
+        <div><label>B — عرض مؤثر سطح اشغال (m)</label><input id="B" type="number" placeholder="مثلاً 22"></div>
+        <div><label>F — تعداد طبقات/سقف‌ها</label><input id="F" type="number" placeholder="مثلاً 12"></div>
+      </div>
+    </div>
 
-          <div class="inputs">
-            <div>
-              <label for="S">S — سطح اشغال (m²)</label>
-              <div class="control">
-                <input id="S" type="number" min="0" step="1" placeholder="مثلاً 2500" />
-                <span class="suffix">m²</span>
-              </div>
-            </div>
-            <div>
-              <label for="D">D — عمق گود / Dmax (m)</label>
-              <div class="control">
-                <input id="D" type="number" min="0" step="0.1" placeholder="مثلاً 27" />
-                <span class="suffix">m</span>
-              </div>
-            </div>
-            <div>
-              <label for="B">B — عرض مؤثر سطح اشغال (m)</label>
-              <div class="control">
-                <input id="B" type="number" min="0" step="0.1" placeholder="مثلاً 22" />
-                <span class="suffix">m</span>
-              </div>
-            </div>
-            <div>
-              <label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label>
-              <div class="control">
-                <input id="F" type="number" min="0" step="1" placeholder="مثلاً 12" />
-                <span class="suffix">طبقه</span>
-              </div>
-            </div>
-          </div>
+    <div class="card">
+      <h2>نتایج</h2>
+      <div class="results">
+        <div class="res"><div>عمق از شروع حفاری</div><div class="val" id="r_start">–</div></div>
+        <div class="res"><div>عمق از زیرِپی</div><div class="val" id="r_found">–</div></div>
+        <div class="res"><div>حداقل گمانه</div><div class="val" id="r_bh">–</div></div>
+        <div class="res"><div>حداقل چاهک گود</div><div class="val" id="r_hs">–</div></div>
+        <div class="res"><div>برش برجا</div><div class="val" id="r_shear">–</div></div>
+        <div class="res"><div>بارگذاری صفحه</div><div class="val" id="r_plate">–</div></div>
+        <div class="res"><div>دان‌هول</div><div class="val" id="r_dh">–</div></div>
+      </div>
 
-          <div class="row">
-            <button id="calc" class="btn">محاسبه</button>
-            <button id="reset" class="btn secondary">ریست</button>
+      <table>
+        <thead><tr><th>شاخص</th><th>مقدار</th><th>توضیح</th></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
 
-Parviz Abdi, [15/06/1404 07:01 ب.ظ]
-<span class="muted small">k<sub>B</sub>: ≤300→2 ، 300&lt;S≤1000→1.5 ، S&gt;1000→1</span>
-          </div>
-        </section>
-
-        <!-- Results -->
-        <section class="card results">
-          <h2>نتایج</h2>
-          <div class="resgrid" id="quick">
-            <div class="res">
-              <div class="k">عمق گمانه از تراز شروع حفاری</div>
-              <div class="v" id="v_depth_start">–</div>
-            </div>
-            <div class="res">
-              <div class="k">عمق گمانه از تراز زیرِپی</div>
-              <div class="v" id="v_depth_found">–</div>
-            </div>
-            <div class="res">
-              <div class="k">حداقل تعداد گمانه‌ها</div>
-              <div class="v" id="v_bh">–</div>
-            </div>
-            <div class="res">
-              <div class="k">حداقل تعداد چاهک گود</div>
-              <div class="v" id="v_hs">–</div>
-            </div>
-            <div class="res">
-              <div class="k">آزمایش برش برجا (تعداد)</div>
-              <div class="v" id="v_shear">–</div>
-            </div>
-            <div class="res">
-              <div class="k">آزمایش بارگذاری صفحه (تعداد)</div>
-              <div class="v" id="v_plate">–</div>
-            </div>
-            <div class="res">
-              <div class="k">دان‌هول (در صورت F≥11)</div>
-              <div class="v" id="v_dh">–</div>
-            </div>
-          </div>
-
-          <div class="table">
-            <table>
-              <thead>
-                <tr>
-                  <th>شاخص</th><th>مقدار</th><th>توضیح</th>
-                </tr>
-              </thead>
-              <tbody id="tableBody">
-                <!-- Filled by JS -->
-              </tbody>
-            </table>
-          </div>
-
-          <div class="toolbar">
-            <button id="copy" class="btn secondary">کپی JSON</button>
-            <button id="download" class="btn secondary">دانلود JSON</button>
-            <span class="muted small">N فقط برای S&gt;1000 (هر پله ۱۰۰۰m² ⇒ +2 گمانه) • M فقط برای D&gt;20 (هر ۱۰m ⇒ +1 چاهک)</span>
-          </div>
-        </section>
+      <div class="toolbar">
+        <button class="btn btn-secondary" id="copy">کپی JSON</button>
+        <button class="btn btn-secondary" id="download">دانلود JSON</button>
       </div>
     </div>
   </div>
 
-  <div id="toast" class="toast">کپی شد</div>
+  <footer>GeoCalc V7 — N: هر ۱۰۰۰m² بالای ۱۰۰۰ ⇒ +۲ گمانه • M: هر ۱۰m بالای ۲۰ ⇒ +۱ چاهک</footer>
 
   <script>
-    // ===== Core Logic (V7) =====
-    const byId = (id)=>document.getElementById(id);
-    const S = byId('S'), D = byId('D'), B = byId('B'), F = byId('F');
+    // --- محاسبات ---
+    const S=document.getElementById('S'),D=document.getElementById('D'),B=document.getElementById('B'),F=document.getElementById('F');
 
-    function kB(S){ return (S<=300)?2 : (S<=1000?1.5:1); }
-    function N_from_S(S){ if(S<=1000) return 0; return 2*Math.ceil((S-1000)/1000); }
-    function M_from_D(D){ if(D<=20) return 0; return Math.ceil((D-20)/10); }
+    function kB(S){ return (S<=300)?2:(S<=1000?1.5:1); }
+    function N(S){ return (S>1000)?2*Math.ceil((S-1000)/1000):0; }
+    function M(D){ return (D>20)?Math.ceil((D-20)/10):0; }
 
-    function min_boreholes(S){
-      const base = (S<=300)?2:3;
-      return base + N_from_S(S);
+    function boreholes(S){ return (S<=300?2:3)+N(S); }
+    function handshafts(S,D){
+      if(S<=300) return (D>10)?2:1;
+      if(S<=1000){ if(D>20) return 3+M(D); if(D>10) return 3; return 2; }
+      if(D>20) return 3+N(S)+M(D);
+      if(D>10) return 3+N(S);
+      return 2+N(S);
     }
-
-    function min_hand_shafts(S,D){
-      const N = N_from_S(S), M = M_from_D(D);
-      if(S<=300){
-        if(D>20) return 2;
-        else if(D>10) return 2;
-        else return 1;
-      } else if(S<=1000){
-        if(D>20) return 3 + M;
-        else if(D>10) return 3;
-        else return 2;
-      } else {
-        if(D>20) return 3 + N + M;
-        else if(D>10) return 3 + N;
-        else return 2 + N;
-      }
-    }
-
-    function in_situ_tests_count(D){
-      if(D < 7) return 0;
-      if(D <= 10) return 1;
-      return 2;
-    }
-
-    function downhole_tests(F,bh){ return (F>=11) ? Math.ceil(bh/3) : 0; }
-
-    function fmt(n, unit){
-      if(typeof n==="number" && !Number.isInteger(n)) n = Number(n.toFixed(2));
-      return unit ? ${n} ${unit} : String(n);
-    }
+    function insitu(D){ if(D<7) return 0; if(D<=10) return 1; return 2; }
+    function downhole(F,bh){ return (F>=11)?Math.ceil(bh/3):0; }
 
     function calc(){
-      const s = Number(S.value||0), d = Number(D.value||0), b = Number(B.value||0), f = Number(F.value||0);
-      if([s,d,b,f].some(x=>!isFinite(x) || x<0)) throw new Error("ورودی‌ها باید اعداد معتبر و غیرمنفی باشند.");
-
-      const kb = kB(s);
-      const depth_from_start = kb*b + d;
-      const depth_from_found  = kb*b;
-
-      const bh = min_boreholes(s);
-      const hs = min_hand_shafts(s,d);
-
-      const t  = in_situ_tests_count(d); // for both shear and plate
-      const dh = downhole_tests(f,bh);
-
-      const N = N_from_S(s);
-      const M = M_from_D(d);
-
+      const s=+S.value||0, d=+D.value||0, b=+B.value||0, f=+F.value||0;
+      const kb=kB(s);
+      const bh=boreholes(s);
+      const hs=handshafts(s,d);
+      const t=insitu(d);
+      const dh=downhole(f,bh);
       return {
-        inputs: {S:s, D:d, B:b, F:f},
-        kb,
-
-Parviz Abdi, [15/06/1404 07:01 ب.ظ]
-depths: {
-          from_start: Number(depth_from_start.toFixed(2)),
-          from_foundation: Number(depth_from_found.toFixed(2))
-        },
-        counts: {
-          boreholes: bh,
-          hand_shafts: hs,
-          in_situ_shear: t,
-          in_situ_plate: t,
-          downhole: dh
-        },
-        increments: {N, M},
+        start: (kb*b+d).toFixed(2), found:(kb*b).toFixed(2),
+        bh, hs, shear:t, plate:t, dh, N:N(s), M:M(d), kb
       };
     }
 
     function render(){
-      try{
-        const r = calc();
+      const r=calc();
+      document.getElementById('r_start').textContent=r.start+" m";
+      document.getElementById('r_found').textContent=r.found+" m";
+      document.getElementById('r_bh').textContent=r.bh;
+      document.getElementById('r_hs').textContent=r.hs;
+      document.getElementById('r_shear').textContent=r.shear;
+      document.getElementById('r_plate').textContent=r.plate;
+      document.getElementById('r_dh').textContent=r.dh;
 
-        // Quick cards
-        byId('v_depth_start').textContent = fmt(r.depths.from_start, 'm');
-        byId('v_depth_found').textContent = fmt(r.depths.from_foundation, 'm');
-        byId('v_bh').textContent = r.counts.boreholes;
-        byId('v_hs').textContent = r.counts.hand_shafts;
-        byId('v_shear').textContent = r.counts.in_situ_shear;
-        byId('v_plate').textContent = r.counts.in_situ_plate;
-        byId('v_dh').textContent = r.counts.downhole;
-
-        // Table
-        const rows = [
-          ['kB', r.kb, 'ضریب دسته‌بندی بر حسب S'],
-          ['N', r.increments.N, 'هر پله 1000 m² ⇒ +2 گمانه (برای S>1000)'],
-          ['M', r.increments.M, 'برای D>20، هر 10 m ⇒ +1 چاهک'],
-          ['عمق گمانه از تراز شروع حفاری', fmt(r.depths.from_start,'m'), 'kB×B + D'],
-          ['عمق گمانه از تراز زیرِپی', fmt(r.depths.from_foundation,'m'), 'kB×B'],
-          ['حداقل تعداد گمانه‌ها', r.counts.boreholes, 'طبق سطر/ستون جدول + N'],
-          ['حداقل تعداد چاهک گود', r.counts.hand_shafts, 'طبق سطر/ستون جدول + M'],
-          ['آزمایش برش برجا (تعداد)', r.counts.in_situ_shear, 'D<7→0 ، 7–10→1 ، >10→2'],
-          ['آزمایش بارگذاری صفحه (تعداد)', r.counts.in_situ_plate, 'همان شرط برش برجا'],
-          ['دان‌هول (در صورت F≥11)', r.counts.downhole, 'ceil(گمانه/3)']
-        ];
-        const tb = byId('tableBody'); tb.innerHTML = '';
-        rows.forEach(rw=>{
-          const tr=document.createElement('tr');
-          rw.forEach((c,i)=>{ const td=document.createElement('td'); td.textContent = c; tr.appendChild(td); });
-          tb.appendChild(tr);
-        });
-
-        return r;
-      }catch(e){
-        showToast(e.message || 'خطا در ورودی‌ها'); return null;
-      }
+      const rows=[
+        ["kB",r.kb,"ضریب دسته‌بندی"],
+        ["N",r.N,"هر پله ۱۰۰۰m² ⇒ +۲ گمانه (S>1000)"],
+        ["M",r.M,"هر ۱۰m بالای ۲۰ ⇒ +۱ چاهک"],
+        ["عمق از شروع حفاری",r.start+" m","kB×B + D"],
+        ["عمق از زیرِپی",r.found+" m","kB×B"],
+        ["حداقل گمانه",r.bh,"طبق جدول + N"],
+        ["حداقل چاهک",r.hs,"طبق جدول + M"],
+        ["برش برجا",r.shear,"D<7=0, 7–10=1, >10=2"],
+        ["بارگذاری صفحه",r.plate,"همان شرط"],
+        ["دان‌هول",r.dh,"اگر F≥11 ⇒ ceil(bh/3)"]
+      ];
+      const tb=document.getElementById('tableBody'); tb.innerHTML="";
+      rows.forEach(rw=>{
+        const tr=document.createElement('tr');
+        rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);});
+        tb.appendChild(tr);
+      });
+      return r;
     }
 
-    function showToast(msg){
-      const t = byId('toast'); t.textContent = msg; t.classList.add('show');
-      setTimeout(()=> t.classList.remove('show'), 1800);
-    }
-
-    // Actions
-    byId('calc').addEventListener('click', ()=> render());
-    [S,D,B,F].forEach(el=>{
-      el.addEventListener('input', ()=> render());
-      el.addEventListener('change', ()=> render());
-    });
-    byId('reset').addEventListener('click', ()=>{
-      S.value = D.value = B.value = F.value = '';
-      render();
-    });
-
-    byId('copy').addEventListener('click', ()=>{
-      const r = render(); if(!r) return;
-      const text = JSON.stringify(r, null, 2);
-      navigator.clipboard?.writeText(text).then(()=>showToast('JSON کپی شد')).catch(()=>showToast('کپی ممکن نشد'));
-    });
-
-    byId('download').addEventListener('click', ()=>{
-      const r = render(); if(!r) return;
-      const blob = new Blob([JSON.stringify(r,null,2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = geocalc-v7-${Date.now()}.json; a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    // First paint
+    [S,D,B,F].forEach(el=> el.addEventListener('input',render));
     render();
 
-    // PWA
-    if('serviceWorker' in navigator){
-      window.addEventListener('load', ()=> navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-    }
+    document.getElementById('copy').onclick=()=>{
+      const r=render();
+      navigator.clipboard.writeText(JSON.stringify(r,null,2));
+      alert("کپی شد!");
+    };
+    document.getElementById('download').onclick=()=>{
+      const r=render();
+      const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download="geocalc-v7.json"; a.click();
+    };
+
+    if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js")); }
   </script>
 </body>
 </html>

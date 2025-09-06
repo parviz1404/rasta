@@ -1,35 +1,36 @@
-// Very tiny offline cache for GitHub Pages
-const CACHE_NAME = "geocalc-v7-cache-v1";
-const ASSETS = ["./", "./index.html", "./sw.js", "./manifest.webmanifest"];
+// GeoCalc V7 — Service Worker (cache for offline)
+const CACHE = "geocalc-v7-cache-v2";
+const ASSETS = ["./", "./index.html", "./sw.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.map(k => (k === CACHE_NAME ? null : caches.delete(k))))
+      Promise.all(keys.map((k) => (k === CACHE ? null : caches.delete(k))))
     )
   );
   self.clients.claim();
 });
 
 self.addEventListener("fetch", (e) => {
-  const url = new URL(e.request.url);
-  // network-first for html (better updates), cache-first for others
-  if (e.request.mode === "navigate" || url.pathname.endsWith("index.html")) {
+  const req = e.request;
+  const url = new URL(req.url);
+  // Network-first for navigation; cache-first for others
+  if (req.mode === "navigate" || url.pathname.endsWith("index.html")) {
     e.respondWith(
-      fetch(e.request).then((res) => {
+      fetch(req).then((res) => {
         const copy = res.clone();
-        caches.open(CACHE_NAME).then((c)=>c.put("./index.html", copy));
+        caches.open(CACHE).then((c) => c.put("./index.html", copy));
         return res;
       }).catch(() => caches.match("./index.html"))
     );
   } else {
     e.respondWith(
-      caches.match(e.request).then((cached) => cached || fetch(e.request))
+      caches.match(req).then((cached) => cached || fetch(req))
     );
   }
 });

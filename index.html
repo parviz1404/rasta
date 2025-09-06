@@ -1,3 +1,4 @@
+Parviz Abdi, [15/06/1404 08:56 ب.ظ]
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -40,7 +41,7 @@
     .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
     .btn{padding:10px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:900; background:linear-gradient(120deg,#3b82f6,#60a5fa); color:#fff; box-shadow:0 10px 22px rgba(59,130,246,.25)}
     .btn-outline{background:#fff; color:var(--primary); border:2px solid var(--primary); box-shadow:none}
-    .note{font-size:12px; color:var(--muted)}
+    .note{font-size:12px; color:#64748b}
     .err{display:none; margin-top:6px; color:#ef4444; font-size:13px}
     .cards{display:grid; gap:12px; grid-template-columns:repeat(3,minmax(180px,1fr))}
     @media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(180px,1fr))}}
@@ -48,10 +49,16 @@
     .card{border:1px solid var(--border); border-radius:16px; background:#fff; padding:14px; box-shadow:var(--shadow2)}
     .k{font-size:12px; color:var(--muted)} .v{font-size:24px; font-weight:900; color:var(--fg); margin-top:4px}
     .chip{display:inline-block; padding:2px 8px; border-radius:999px; background:#eff6ff; border:1px solid #dbeafe; color:#1d4ed8; font-size:12px}
-    .table-wrap{overflow:auto; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow2)}
-    table{width:100%; border-collapse:collapse; min-width:680px}
-    th,td{padding:12px; border-bottom:1px solid var(--border); text-align:center}
+
+    /* جدول و جلوگیری از بیرون‌زدن عددها روی موبایل */
+    .table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow2)}
+    table{width:100%; border-collapse:collapse; min-width:680px; table-layout:fixed}
+    th,td{padding:12px; border-bottom:1px solid var(--border); text-align:center; overflow-wrap:anywhere; word-break:break-word}
     th{background:#f7f9ff; color:#374151; font-size:13px}
+
+Parviz Abdi, [15/06/1404 08:56 ب.ظ]
+td:nth-child(2){direction:ltr; text-align:left; white-space:nowrap;}
+
     footer{margin:22px auto 28px; max-width:1100px; padding:14px 16px; background:#fff; border:1px dashed #c7d2fe; color:#1f2937; border-radius:16px; box-shadow:var(--shadow2); line-height:1.8; font-size:13px}
     footer strong{font-weight:900}
   </style>
@@ -69,10 +76,10 @@
         </div>
         <div class="sec-body">
           <div class="inputs">
-            <div><label for="S">S — سطح اشغال (m²)</label><div class="control"><input id="S" placeholder="مثلاً 2500" /><span class="suffix">m²</span></div></div>
-            <div><label for="D">D — عمق گود، Dmax (m)</label><div class="control"><input id="D" placeholder="مثلاً 27" /><span class="suffix">m</span></div></div>
-            <div><label for="B">B — عرض مؤثر سطح اشغال (m)</label><div class="control"><input id="B" placeholder="مثلاً 22" /><span class="suffix">m</span></div></div>
-            <div><label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label><div class="control"><input id="F" placeholder="مثلاً 12" /><span class="suffix">طبقه</span></div></div>
+            <div><label for="S">S — سطح اشغال (m²)</label><div class="control"><input id="S" inputmode="decimal" placeholder="مثلاً 2500" /><span class="suffix">m²</span></div></div>
+            <div><label for="D">D — عمق گود، Dmax (m)</label><div class="control"><input id="D" inputmode="decimal" placeholder="مثلاً 27" /><span class="suffix">m</span></div></div>
+            <div><label for="B">B — عرض مؤثر سطح اشغال (m)</label><div class="control"><input id="B" inputmode="decimal" placeholder="مثلاً 22" /><span class="suffix">m</span></div></div>
+            <div><label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label><div class="control"><input id="F" inputmode="numeric" placeholder="مثلاً 12" /><span class="suffix">طبقه</span></div></div>
           </div>
           <div class="row">
             <button id="calc" class="btn">محاسبه</button>
@@ -116,7 +123,9 @@
       <div class="sec-body">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>شاخص</th><th>مقدار</th><th>توضیح</th></tr></thead>
+
+Parviz Abdi, [15/06/1404 08:56 ب.ظ]
+<thead><tr><th>شاخص</th><th>مقدار</th><th>توضیح</th></tr></thead>
             <tbody id="tbody"></tbody>
           </table>
         </div>
@@ -167,7 +176,7 @@
       const startBase=Number((kb*B + D).toFixed(2));
       const found=Number((kb*B).toFixed(2));
       const bh=boreholes(S), hs=handshafts(S,D), t=insitu(D), dh=downhole(F,bh);
-      const thresholdFromStart = D + 30; // << اصلاح: 30 متر زیر تراز فونداسیون
+      const thresholdFromStart = D + 30; // ۳۰ متر زیر تراز فونداسیون
       const plan=depthPlanFromStart(startBase, bh, thresholdFromStart);
       return {S,D,B,F,kb,start:startBase,found,bh,hs,shear:t,plate:t,dh,N:N(S),M:M(D), plan};
     }
@@ -178,7 +187,6 @@
         els.start.textContent=r.start+" m"; els.found.textContent=r.found+" m";
         els.bh.textContent=r.bh; els.hs.textContent=r.hs;
         els.shear.textContent=r.shear; els.plate.textContent=r.plate; els.dh.textContent=r.dh;
-
         els.planChip.textContent = r.plan.summary || '—';
 
         const rows=[
@@ -189,14 +197,20 @@
           ["عمق از تراز زیرِپی",           r.found+" m", "kB×B"],
           ["حداقل تعداد گمانه‌ها",         r.bh, "طبق جدول + N"],
           ["حداقل تعداد چاهک گود",         r.hs, "طبق جدول + M (در صورت D>20)"],
-          ["آستانه الزام (از شروع حفاری)", (r.D_plus_30??(r.plan.thresholdFromStart)).toFixed ? (r.plan.thresholdFromStart+" m") : (r.plan.thresholdFromStart+" m"), "D + 30 (۳۰ متر زیر تراز فونداسیون)"],
-          ["طرح عمق گمانه‌ها",             r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
+          ["آستانه الزام (از شروع حفاری)", r.plan.thresholdFromStart+" m", "D + 30 (۳۰ متر زیر تراز فونداسیون)"],
+
+Parviz Abdi, [15/06/1404 08:56 ب.ظ]
+["طرح عمق گمانه‌ها",             r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
           ["آزمایش برش برجا (تعداد)",      r.shear, "D<7→0 ، 7–10→1 ، >10→2"],
           ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط برش برجا"],
           ["دان‌هول (در صورت F≥11)",       r.dh, "ceil(گمانه/3)"]
         ];
         els.tb.innerHTML='';
-        rows.forEach(rw=>{const tr=document.createElement('tr'); rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);}); els.tb.appendChild(tr);});
+        rows.forEach(rw=>{
+          const tr=document.createElement('tr');
+          rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);});
+          els.tb.appendChild(tr);
+        });
       }catch(e){ $('err').style.display='block'; }
     }
 

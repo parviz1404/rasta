@@ -1,299 +1,222 @@
-<!DOCTYPE html>
+Parviz Abdi, [15/06/1404 06:42 ب.ظ]
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ماشین‌حساب گمانه | Rasta PWA v6.1</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#00a7b7">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;background:#f6f9fc;color:#0a2a4a;margin:0}
-  .wrap{max-width:980px;margin:24px auto;padding:0 16px}
-  header{background:#0a2a4a;color:#fff;border-radius:16px;padding:16px 18px}
-  h1{font-size:20px;margin:0 0 6px}
-  small{opacity:.9}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .card{background:#fff;border:1px solid #e6edf5;border-radius:14px;padding:14px 16px;margin:12px 0;box-shadow:0 8px 16px rgba(0,0,0,.04)}
-  label{font-weight:600;font-size:14px}
-  input{width:100%;padding:10px;border:1px solid #d7dde8;border-radius:10px;background:#fbfdff}
-  .btn{background:#00a7b7;color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
-  .res{border:2px dashed #00a7b7;border-radius:12px;background:#f0fbfd;padding:12px;margin-top:10px}
-  .muted{color:#334;opacity:.9;font-size:13px;line-height:1.9}
-  .err{color:#b00020;margin-top:8px}
-  .pill{display:inline-block;background:#0a2a4a;color:#fff;padding:2px 8px;border-radius:999px;font-size:12px;margin-inline-start:6px}
-  .kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .kpi .item{background:#fff;border:1px solid #e6edf5;border-radius:12px;padding:10px}
-  footer{font-size:12px;color:#556;opacity:.9;margin-top:6px}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ماشین‌حساب ژئوتکنیک (گمانه/چاهک/برجا) — V7</title>
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon-192.png" sizes="192x192">
+  <link rel="icon" href="./icon-512.png" sizes="512x512">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="GeoCalc V7">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+
+  <style>
+    :root{--bg:#fafafa;--fg:#111;--muted:#666;--card:#fff;--border:#e6e6e6}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{max-width:880px;margin:32px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+    h1{font-size:20px;margin:0 0 12px}
+    h2{font-size:16px;margin:24px 0 8px}
+    label{display:block;font-weight:600;margin:12px 0 6px}
+    input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+    button{padding:12px 16px;border:0;border-radius:10px;background:#111;color:#fff;font-weight:700;cursor:pointer}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .muted{color:var(--muted);font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:center}
+    kbd{background:#f2f2f2;border:1px solid #e0e0e0;border-bottom-width:2px;padding:2px 6px;border-radius:6px;font-family:ui-monospace,monospace}
+    .pill{display:inline-block;background:#f2f2f2;border:1px solid #e6e6e6;border-radius:999px;padding:2px 8px;font-size:12px}
+    footer{margin:24px 0 12px}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>ماشین‌حساب تعیین تعداد و عمق گمانه <span class="pill">B = عرض زمین</span></h1>
-    <small>PWA v6.1 – اعداد فارسی/عربی و اعشار «،» پذیرفته می‌شود. برای نصب: Share → Add to Home Screen.</small>
-  </header>
+  <div class="wrap">
+    <div class="card">
+      <h1>ماشین‌حساب گمانه، چاهک گود، آزمایشات برجا (نسخه V7)</h1>
+      <p class="muted">ورودی‌ها را بر حسب متر و مترمربع وارد کنید. خروجی‌ها فقط عدد هستند.</p>
 
-  <div class="card grid">
-    <div><label>سطح اشغال S (m²)</label><input id="S" placeholder="مثلاً ۴۲۰"></div>
-    <div><label>عمق گود D (m)</label><input id="D" placeholder="مثلاً ۶"></div>
-    <div><label>عرض زمین B (m)</label><input id="B" placeholder="مثلاً ۱۴"></div>
-    <div><label>پارامترها (N,M,DvA)</label><input id="P" value="N=۰,M=۰,DvA=۰" placeholder="مثلاً N=۱,M=۰,DvA=۲"></div>
+      <div class="grid">
+        <div>
+          <label for="S">S — سطح اشغال (m²)</label>
+          <input id="S" type="number" inputmode="decimal" placeholder="مثلاً 2500" />
+        </div>
+        <div>
+          <label for="D">D — عمق گود، Dmax (m)</label>
+          <input id="D" type="number" inputmode="decimal" placeholder="مثلاً 27" />
+        </div>
+        <div>
+          <label for="B">B — عرض مؤثر سطح اشغال (m)</label>
+          <input id="B" type="number" inputmode="decimal" placeholder="مثلاً 22" />
+        </div>
+        <div>
+          <label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label>
+          <input id="F" type="number" inputmode="numeric" placeholder="مثلاً 12" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="calc">محاسبه</button>
+        <span class="muted">k<sub>B</sub> بر اساس S: <span class="pill"><kbd>≤300→2</kbd> ، <kbd>≤1000→1.5</kbd> ، <kbd>&gt;1000→1</kbd></span></span>
+      </div>
+
+      <h2>نتایج</h2>
+      <table id="out">
+        <thead>
+          <tr>
+            <th>عنوان</th>
+            <th>مقدار</th>
+            <th>واحد/توضیح</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <footer class="muted">
+        قواعد: N فقط برای S&gt;1000 (هر پله ۱۰۰۰ متر ⇒ ۲ گمانه اضافه). M فقط برای D&gt;20 (هر ۱۰ متر ⇒ ۱ چاهک اضافه).<br/>
+        آزمایشات برجا: D&lt;7 ⇒ 0 ، 7–10 ⇒ 1 ، &gt;10 ⇒ 2. دان‌هول: اگر F≥11 ⇒ ceil(گمانه/3)؛ وگرنه 0.
+      </footer>
+    </div>
   </div>
 
-  <button class="btn" onclick="calc()">محاسبه</button>
-  <div id="err" class="err" style="display:none"></div>
-  <div id="out" class="res" style="display:none"></div>
+  <script>
+    // ------- Logic (V7) -------
+    function kB(S){ return (S<=300)?2 : (S<=1000?1.5:1); }
 
-  <div class="card">
-    <b>تعاریف و زیرنویس (خلاصه)</b>
-    <ul class="muted">
-      <li>N = افزایندهٔ تعداد گمانه بابت بلوک/پلان مستقل (طبق ابلاغ).</li>
-      <li>M = افزایندهٔ تعداد گمانه بابت شرایط عمقی/خاص در بازه‌های D&gt;10m (طبق ابلاغ).</li>
-      <li>DvA = افزونهٔ عمق ناشی از ترانشه/تراز آب/شرایط محلی که به عمق فرمولی اضافه می‌شود.</li>
-      <li>دانهول/چاهک و PLT مطابق سلول انتخابی (اجباری/مشروط) اجرا شوند.</li>
-    </ul>
-    <footer>این ابزار راهنماست؛ تصمیم نهایی با مسئول فنی پروژه است.</footer>
-  </div>
-</div>
+    // N: only if S>1000 → steps of 1000 above 1000; each step adds 2 boreholes
+    function N_from_S(S){
+      if(S<=1000) return 0;
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
+Parviz Abdi, [15/06/1404 06:42 ب.ظ]
+const steps = Math.ceil((S-1000)/1000);  // 1001..2000 => 1, 2001..3000 => 2, ...
+      return 2*steps;
+    }
 
-function normalizeNum(s){
-  if(s==null) return "";
-  const pers = "۰۱۲۳۴۵۶۷۸۹", arab = "٠١٢٣٤٥٦٧٨٩";
-  let out = "";
-  for (let ch of String(s)){
-    const p = pers.indexOf(ch), a = arab.indexOf(ch);
-    if (p>-1) out += String(p);
-    else if (a>-1) out += String(a);
-    else if (ch==="،" || ch===",") out += ".";
-    else out += ch;
-  }
-  return out.trim();
-}
-function toNum(v){ const x=parseFloat(normalizeNum(v)); return Number.isFinite(x)?x:0; }
+    // M: only if D>20 → each 10 m above 20 adds 1 hand shaft (21..30 ->1, 31..40 ->2, ...)
+    function M_from_D(D){
+      if(D<=20) return 0;
+      return Math.ceil((D-20)/10);
+    }
 
-const Sbins=[{k:"S0_300",min:0,max:300},{k:"S300_1000",min:300,max:1000},{k:"S1000_up",min:1000,max:1e9}];
-function binS(S){for(const b of Sbins){if(S>b.min && S<=b.max) return b.k}return "S1000_up"}
-function binD(D){if(D<=1)return"D_le_1";if(D<=10)return"D_1_10";if(D<=20)return"D_10_20";return"D_gt_20"}
+    function min_boreholes(S){
+      const base = (S<=300)?2:3;
+      return base + N_from_S(S);
+    }
 
-const rules = {
-  "S0_300":{
-    "D_le_1":  {depth:"2*B + DvA",   minBH:"2",      pits:"1",   plt:"در صورت نیاز"},
-    "D_1_10":  {depth:"2*B + DvA",   minBH:"2",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_10_20": {depth:"2*B + DvA",   minBH:"2",      pits:"2*B", plt:"اجباری"},
-    "D_gt_20": {depth:"2*B + DvA",   minBH:"3",      pits:"2*B", plt:"اجباری"}
-  },
-  "S300_1000":{
-    "D_le_1":  {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_1_10":  {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_10_20": {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"اجباری"},
-    "D_gt_20": {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"اجباری"}
-  },
-  "S1000_up":{
-    "D_le_1":  {depth:"1*B + DvA",   minBH:"3+N",    pits:"B",   plt:"اگر Dmax ≥ 7 باشد"},
-    "D_1_10":  {depth:"1*B + DvA",   minBH:"3+N",    pits:"B",   plt:"اگر Dmax ≥ 7 باشد"},
-    "D_10_20": {depth:"1*B + DvA",   minBH:"3+M+N",  pits:"B",   plt:"اجباری"},
-    "D_gt_20": {depth:"1*B + DvA",   minBH:"3+M+N",  pits:"B",   plt:"اجباری"}
-  }
-};
+    function min_hand_shafts(S,D){
+      const N = N_from_S(S);
+      const M = M_from_D(D);
+      if(S<=300){
+        if(D>20) return 2;
+        else if(D>10) return 2;
+        else return 1;
+      } else if(S<=1000){
+        if(D>20) return 3 + M;
+        else if(D>10) return 3;
+        else return 2;
+      } else { // S>1000
+        if(D>20) return 3 + N + M;
+        else if(D>10) return 3 + N;
+        else return 2 + N;
+      }
+    }
 
-function parseParams(s){
-  const o={N:0,M:0,DvA:0};
-  (String(s)||"").split(",").forEach(p=>{
-    const kv=p.split("="); if(kv.length!==2) return;
-    const k=kv[0].trim(); const v=toNum(kv[1]);
-    if(Object.hasOwn(o,k)) o[k]=v;
-  });
-  return o;
-}
+    // In-situ tests (both shear & plate)
+    function in_situ_tests_count(D){
+      if(D < 7) return 0;
+      if(D <= 10) return 1;
+      return 2;
+    }
 
-function evalExpr(expr, vars){
-  const safe = String(expr).replace(/[^0-9+\-*/(). A-Za-z]/g,"");
-  const rep  = safe.replace(/B/g, vars.B).replace(/DvA/g, vars.DvA)
-                   .replace(/N/g, vars.N).replace(/M/g, vars.M);
-  try{ const val = Number(Function(`"use strict";return (${rep})`)()); return Number.isFinite(val)?val:NaN; }catch{return NaN;}
-}
+    // Downhole (outside table but required)
+    function downhole_tests(F, boreholes){
+      return (F>=11) ? Math.ceil(boreholes/3) : 0;
+    }
 
-function calc(){
-  const S = toNum(document.getElementById('S').value);
-  const D = toNum(document.getElementById('D').value);
-  const B = toNum(document.getElementById('B').value);
-  const P = parseParams(document.getElementById('P').value);
+    function format(n,unit=""){
+      if(typeof n === "number" && !Number.isInteger(n)) n = Number(n.toFixed(2));
+      return unit ? ${n} ${unit} : String(n);
+    }
 
-  const err=document.getElementById('err'), out=document.getElementById('out');
-  err.style.display='none'; out.style.display='none';
+    function calcAll(S,D,B,F){
+      S = Number(S); D = Number(D); B = Number(B); F = Number(F);
+      if([S,D,B,F].some(x => !isFinite(x) || x<0)) throw new Error("ورودی‌ها را صحیح و غیرمنفی وارد کنید.");
 
-  if(S<=0 || B<=0){
-    err.style.display='block';
-    err.textContent='لطفاً حداقل «S» و «B (عرض زمین)» را وارد کنید.';
-    return;
-  }
+      const kb = kB(S);
+      const depth_from_start = kb*B + D;
+      const depth_from_found = kb*B;
 
-  const cell = rules[binS(S)][binD(D)];
-  const minBH_num = evalExpr(cell.minBH, {B,DvA:P.DvA,N:P.N,M:P.M});
-  const depth_num = evalExpr(cell.depth, {B,DvA:P.DvA,N:P.N,M:P.M});
+      const bh = min_boreholes(S);
+      const hs = min_hand_shafts(S,D);
 
-  const minBH_disp = Number.isFinite(minBH_num)? minBH_num : cell.minBH;
-  const depth_disp = Number.isFinite(depth_num)? depth_num.toFixed(2)+' m' : cell.depth;
+      const t = in_situ_tests_count(D); // applies to both shear & plate
+      const dh = downhole_tests(F, bh);
 
-  out.style.display='block';
-  out.innerHTML = `<b>حداقل تعداد گمانه:</b> ${minBH_disp}<br>
-                   <b>عمق پیشنهادی هر گمانه:</b> ${depth_disp} <span class="muted">(B = عرض زمین)</span><br>
-                   <b>حداقل چاهک/دانهول:</b> ${cell.pits} — <b>PLT:</b> ${cell.plt}`;
-}
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ماشین‌حساب گمانه | Rasta PWA v6.1</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#00a7b7">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;background:#f6f9fc;color:#0a2a4a;margin:0}
-  .wrap{max-width:980px;margin:24px auto;padding:0 16px}
-  header{background:#0a2a4a;color:#fff;border-radius:16px;padding:16px 18px}
-  h1{font-size:20px;margin:0 0 6px}
-  small{opacity:.9}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .card{background:#fff;border:1px solid #e6edf5;border-radius:14px;padding:14px 16px;margin:12px 0;box-shadow:0 8px 16px rgba(0,0,0,.04)}
-  label{font-weight:600;font-size:14px}
-  input{width:100%;padding:10px;border:1px solid #d7dde8;border-radius:10px;background:#fbfdff}
-  .btn{background:#00a7b7;color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
-  .res{border:2px dashed #00a7b7;border-radius:12px;background:#f0fbfd;padding:12px;margin-top:10px}
-  .muted{color:#334;opacity:.9;font-size:13px;line-height:1.9}
-  .err{color:#b00020;margin-top:8px}
-  .pill{display:inline-block;background:#0a2a4a;color:#fff;padding:2px 8px;border-radius:999px;font-size:12px;margin-inline-start:6px}
-  .kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .kpi .item{background:#fff;border:1px solid #e6edf5;border-radius:12px;padding:10px}
-  footer{font-size:12px;color:#556;opacity:.9;margin-top:6px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <h1>ماشین‌حساب تعیین تعداد و عمق گمانه <span class="pill">B = عرض زمین</span></h1>
-    <small>PWA v6.1 – اعداد فارسی/عربی و اعشار «،» پذیرفته می‌شود. برای نصب: Share → Add to Home Screen.</small>
-  </header>
+      const N = N_from_S(S);
+      const M = M_from_D(D);
 
-  <div class="card grid">
-    <div><label>سطح اشغال S (m²)</label><input id="S" placeholder="مثلاً ۴۲۰"></div>
-    <div><label>عمق گود D (m)</label><input id="D" placeholder="مثلاً ۶"></div>
-    <div><label>عرض زمین B (m)</label><input id="B" placeholder="مثلاً ۱۴"></div>
-    <div><label>پارامترها (N,M,DvA)</label><input id="P" value="N=۰,M=۰,DvA=۰" placeholder="مثلاً N=۱,M=۰,DvA=۲"></div>
-  </div>
+      return {
+        kb,
+        depth_from_start,
+        depth_from_found,
+        min_boreholes: bh,
+        min_hand_shafts: hs,
+        shear_in_situ_tests: t,
+        plate_load_tests: t,
+        downhole_tests: dh,
+        N_steps_value: N,
+        M_steps_value: M
+      };
+    }
 
-  <button class="btn" onclick="calc()">محاسبه</button>
-  <div id="err" class="err" style="display:none"></div>
-  <div id="out" class="res" style="display:none"></div>
+    function fillTable(rows){
+      const tb = document.querySelector("#out tbody");
+      tb.innerHTML = "";
+      const add = (title, value, unit="")=>{
+        const tr = document.createElement("tr");
+        const td1 = document.createElement("td"); td1.textContent = title;
+        const td2 = document.createElement("td"); td2.innerHTML = <kbd>${value}</kbd>;
+        const td3 = document.createElement("td"); td3.textContent = unit;
+        tr.append(td1,td2,td3); tb.appendChild(tr);
+      };
+      add("kB", rows.kb, "ضریب دسته‌بندی بر حسب S");
+      add("عمق گمانه از تراز شروع حفاری", format(rows.depth_from_start,"m"));
+      add("عمق گمانه از تراز زیرِپی", format(rows.depth_from_found,"m"));
+      add("حداقل تعداد گمانه‌ها", rows.min_boreholes, "شامل N پلّه‌ای");
+      add("حداقل تعداد چاهک گود", rows.min_hand_shafts, "شامل M پلّه‌ای (اگر D>20)");
+      add("آزمایش برش برجا (تعداد)", rows.shear_in_situ_tests);
+      add("آزمایش بارگذاری صفحه (تعداد)", rows.plate_load_tests);
+      add("دان‌هول (در صورت F≥11)", rows.downhole_tests);
+      add("N (افزایشی گمانه‌ها برای S>1000)", rows.N_steps_value, "هر پله 1000m² ⇒ +2");
+      add("M (افزایشی چاهک‌ها برای D>20)", rows.M_steps_value, "هر 10m ⇒ +1");
+    }
 
-  <div class="card">
-    <b>تعاریف و زیرنویس (خلاصه)</b>
-    <ul class="muted">
-      <li>N = افزایندهٔ تعداد گمانه بابت بلوک/پلان مستقل (طبق ابلاغ).</li>
-      <li>M = افزایندهٔ تعداد گمانه بابت شرایط عمقی/خاص در بازه‌های D&gt;10m (طبق ابلاغ).</li>
-      <li>DvA = افزونهٔ عمق ناشی از ترانشه/تراز آب/شرایط محلی که به عمق فرمولی اضافه می‌شود.</li>
-      <li>دانهول/چاهک و PLT مطابق سلول انتخابی (اجباری/مشروط) اجرا شوند.</li>
-    </ul>
-    <footer>این ابزار راهنماست؛ تصمیم نهایی با مسئول فنی پروژه است.</footer>
-  </div>
-</div>
+    document.getElementById("calc").addEventListener("click", () => {
+      try{
+        const S = document.getElementById("S").value;
+        const D = document.getElementById("D").value;
+        const B = document.getElementById("B").value;
+        const F = document.getElementById("F").value;
+        const rows = calcAll(S,D,B,F);
+        fillTable(rows);
+      }catch(e){
+        alert(e.message || "خطا در ورودی‌ها");
+      }
+    });
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
-
-function normalizeNum(s){
-  if(s==null) return "";
-  const pers = "۰۱۲۳۴۵۶۷۸۹", arab = "٠١٢٣٤٥٦٧٨٩";
-  let out = "";
-  for (let ch of String(s)){
-    const p = pers.indexOf(ch), a = arab.indexOf(ch);
-    if (p>-1) out += String(p);
-    else if (a>-1) out += String(a);
-    else if (ch==="،" || ch===",") out += ".";
-    else out += ch;
-  }
-  return out.trim();
-}
-function toNum(v){ const x=parseFloat(normalizeNum(v)); return Number.isFinite(x)?x:0; }
-
-const Sbins=[{k:"S0_300",min:0,max:300},{k:"S300_1000",min:300,max:1000},{k:"S1000_up",min:1000,max:1e9}];
-function binS(S){for(const b of Sbins){if(S>b.min && S<=b.max) return b.k}return "S1000_up"}
-function binD(D){if(D<=1)return"D_le_1";if(D<=10)return"D_1_10";if(D<=20)return"D_10_20";return"D_gt_20"}
-
-const rules = {
-  "S0_300":{
-    "D_le_1":  {depth:"2*B + DvA",   minBH:"2",      pits:"1",   plt:"در صورت نیاز"},
-    "D_1_10":  {depth:"2*B + DvA",   minBH:"2",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_10_20": {depth:"2*B + DvA",   minBH:"2",      pits:"2*B", plt:"اجباری"},
-    "D_gt_20": {depth:"2*B + DvA",   minBH:"3",      pits:"2*B", plt:"اجباری"}
-  },
-  "S300_1000":{
-    "D_le_1":  {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_1_10":  {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"در صورت نیاز"},
-    "D_10_20": {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"اجباری"},
-    "D_gt_20": {depth:"1.5*B + DvA", minBH:"3",      pits:"2*B", plt:"اجباری"}
-  },
-  "S1000_up":{
-    "D_le_1":  {depth:"1*B + DvA",   minBH:"3+N",    pits:"B",   plt:"اگر Dmax ≥ 7 باشد"},
-    "D_1_10":  {depth:"1*B + DvA",   minBH:"3+N",    pits:"B",   plt:"اگر Dmax ≥ 7 باشد"},
-    "D_10_20": {depth:"1*B + DvA",   minBH:"3+M+N",  pits:"B",   plt:"اجباری"},
-    "D_gt_20": {depth:"1*B + DvA",   minBH:"3+M+N",  pits:"B",   plt:"اجباری"}
-  }
-};
-
-function parseParams(s){
-  const o={N:0,M:0,DvA:0};
-  (String(s)||"").split(",").forEach(p=>{
-    const kv=p.split("="); if(kv.length!==2) return;
-    const k=kv[0].trim(); const v=toNum(kv[1]);
-    if(Object.hasOwn(o,k)) o[k]=v;
-  });
-  return o;
-}
-
-function evalExpr(expr, vars){
-  const safe = String(expr).replace(/[^0-9+\-*/(). A-Za-z]/g,"");
-  const rep  = safe.replace(/B/g, vars.B).replace(/DvA/g, vars.DvA)
-                   .replace(/N/g, vars.N).replace(/M/g, vars.M);
-  try{ const val = Number(Function(`"use strict";return (${rep})`)()); return Number.isFinite(val)?val:NaN; }catch{return NaN;}
-}
-
-function calc(){
-  const S = toNum(document.getElementById('S').value);
-  const D = toNum(document.getElementById('D').value);
-  const B = toNum(document.getElementById('B').value);
-  const P = parseParams(document.getElementById('P').value);
-
-  const err=document.getElementById('err'), out=document.getElementById('out');
-  err.style.display='none'; out.style.display='none';
-
-  if(S<=0 || B<=0){
-    err.style.display='block';
-    err.textContent='لطفاً حداقل «S» و «B (عرض زمین)» را وارد کنید.';
-    return;
-  }
-
-  const cell = rules[binS(S)][binD(D)];
-  const minBH_num = evalExpr(cell.minBH, {B,DvA:P.DvA,N:P.N,M:P.M});
-  const depth_num = evalExpr(cell.depth, {B,DvA:P.DvA,N:P.N,M:P.M});
-
-  const minBH_disp = Number.isFinite(minBH_num)? minBH_num : cell.minBH;
-  const depth_disp = Number.isFinite(depth_num)? depth_num.toFixed(2)+' m' : cell.depth;
-
-  out.style.display='block';
-  out.innerHTML = `<b>حداقل تعداد گمانه:</b> ${minBH_disp}<br>
-                   <b>عمق پیشنهادی هر گمانه:</b> ${depth_disp} <span class="muted">(B = عرض زمین)</span><br>
-                   <b>حداقل چاهک/دانهول:</b> ${cell.pits} — <b>PLT:</b> ${cell.plt}`;
-}
-</script>
+    // PWA: register service worker
+    if("serviceWorker" in navigator){
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(()=>{});
+      });
+    }
+  </script>
 </body>
 </html>

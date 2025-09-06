@@ -3,8 +3,8 @@
   "short_name": "GeoCalc V7",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b1020",
-  "theme_color": "#0f172a",
+  "background_color": "#f3f4f6",
+  "theme_color": "#2563eb",
   "dir": "rtl",
   "lang": "fa",
   "icons": [

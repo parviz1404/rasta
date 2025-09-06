@@ -5,165 +5,63 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GeoCalc — محاسبه‌گر گمانه/چاهک/آزمایش برجا (V7)</title>
   <style>
-    /* ===== Design System (Light, modern) ===== */
     :root{
-      --bg: #f4f7fb;
-      --fg: #0b1020;
-      --muted:#6b7280;
-
-      --primary:#2563eb;
-      --primary-2:#60a5fa;
-      --success:#10b981;
-      --warn:#f59e0b;
-
-      --panel:#ffffff;
-      --panel-1:#eef4ff; /* Inputs tint */
-      --panel-2:#ffffff; /* Quick results */
-      --panel-3:#fafcff; /* Data details */
-
-      --border:#e6e8ef;
-      --shadow-lg: 0 22px 50px rgba(2,6,23,.10);
-      --shadow-md: 0 14px 34px rgba(2,6,23,.08);
-      --inset-1: inset 6px 6px 14px rgba(0,0,0,.06), inset -6px -6px 14px rgba(255,255,255,.8);
-      --inset-2: inset 3px 3px 8px rgba(0,0,0,.05), inset -3px -3px 8px rgba(255,255,255,.9);
-
-      --radius-xl: 20px;
-      --radius-lg: 16px;
-      --radius-md: 12px;
+      --bg:#f4f7fb; --fg:#0b1020; --muted:#6b7280;
+      --primary:#2563eb; --primary-2:#60a5fa; --success:#059669; --warn:#f59e0b;
+      --tint1:#eef4ff; --tint2:#ffffff; --tint3:#fafcff;
+      --border:#e6e8ef; --shadow:0 16px 40px rgba(2,6,23,.08); --shadow2:0 10px 24px rgba(2,6,23,.06);
+      --r-lg:18px; --r-md:12px;
     }
     *{box-sizing:border-box}
     body{
       margin:0; background:
-        radial-gradient(900px 400px at 110% -10%, rgba(96,165,250,.15), transparent 60%),
-        radial-gradient(900px 400px at -10% 110%, rgba(125,211,252,.12), transparent 60%),
-        var(--bg);
-      color:var(--fg);
-      font:16px/1.65 "Vazirmatn", "IRANSans", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+        radial-gradient(900px 420px at 110% -10%, rgba(96,165,250,.15), transparent 60%),
+        radial-gradient(900px 420px at -10% 110%, rgba(125,211,252,.12), transparent 60%), #f4f7fb;
+      color:var(--fg); font:16px/1.65 "Vazirmatn","IRANSans",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
     }
-
-    /* ===== Header ===== */
-    header{
-      position:relative;
-      padding:22px 20px;
-      background: linear-gradient(120deg, var(--primary), var(--primary-2));
-      color:#fff;
-      box-shadow: var(--shadow-lg);
-    }
-    .hero{
-      max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-    }
-    .logo{
-      width:44px; height:44px; display:grid; place-items:center;
-      background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.35);
-      border-radius:14px; backdrop-filter: blur(4px);
-    }
-    h1{margin:0; font-size:20px; font-weight:900; letter-spacing:.2px}
-    .tag{font-size:12px; opacity:.9}
-
-    /* ===== Layout ===== */
-    .wrap{max-width:1100px; margin:22px auto; padding:0 16px; }
-    .grid{
-      display:grid; gap:18px; grid-template-columns: 1.08fr .92fr;
-    }
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-
-    /* ===== Sections (elevations & tints) ===== */
-    .section{
-      border:1px solid var(--border); border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-md); overflow:hidden; backdrop-filter: blur(4px);
-    }
-    .sec-header{
-      display:flex; align-items:center; gap:10px;
-      padding:14px 18px; border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
-    }
+    header{background:linear-gradient(120deg,var(--primary),var(--primary-2)); color:#fff; padding:18px 20px; box-shadow:var(--shadow)}
+    header h1{margin:0; font-size:19px; font-weight:900}
+    .wrap{max-width:1100px; margin:22px auto; padding:0 16px}
+    .grid{display:grid; gap:18px; grid-template-columns:1.05fr .95fr}
+    @media (max-width:990px){.grid{grid-template-columns:1fr}}
+    .section{border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow)}
+    .sec-header{display:flex; gap:10px; align-items:center; padding:12px 16px; background:#fff8; backdrop-filter:blur(4px); border-bottom:1px solid var(--border)}
     .sec-title{margin:0; font-size:16px; font-weight:900; color:#1f2937}
-    .sec-body{padding:18px}
-    .sec-muted{font-size:13px; color:var(--muted)}
-
-    .sec-inputs{ background: var(--panel-1); }
-    .sec-results{ background: var(--panel-2); }
-    .sec-table{ background: var(--panel-3); }
-
-    /* Inputs (neumorphic-ish) */
-    .inputs{display:grid; gap:12px; grid-template-columns:repeat(2, minmax(220px, 1fr));}
-    @media (max-width:700px){ .inputs{grid-template-columns:1fr} }
+    .sec-body{padding:16px}
+    .sec-inputs{background:var(--tint1)}
+    .sec-results{background:var(--tint2)}
+    .sec-table{background:var(--tint3)}
+    .inputs{display:grid; gap:12px; grid-template-columns:repeat(2,minmax(220px,1fr))}
+    @media (max-width:700px){.inputs{grid-template-columns:1fr}}
     label{display:block; font-size:12px; font-weight:800; color:#334155; margin:6px 2px}
-    .control{
-      display:flex; align-items:center; gap:10px;
-      border:1px solid var(--border); border-radius: var(--radius-md);
-      background: #f8fbff; box-shadow: var(--inset-2);
-      padding:10px 12px;
-    }
-    input{
-      width:100%; border:0; outline:0; background:transparent; font-weight:800;
-      color:#0b1020; direction:ltr; text-align:right;
-    }
+    .control{display:flex; align-items:center; gap:10px; background:#f8fbff; border:1px solid var(--border); border-radius:var(--r-md); padding:10px 12px; box-shadow:inset 0 2px 6px rgba(0,0,0,.04)}
+    input{width:100%; border:0; outline:0; background:transparent; font-weight:800; color:#0b1020; direction:ltr; text-align:right}
     .suffix{font-size:12px; color:var(--muted)}
-
     .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
-    .btn{
-      padding:10px 16px; border-radius: 12px; border:0; cursor:pointer; font-weight:900;
-      background: linear-gradient(120deg, #3b82f6, #60a5fa); color:#fff; box-shadow: 0 10px 22px rgba(59,130,246,.25);
-    }
-    .btn-outline{
-      background:#fff; color:var(--primary); border:2px solid var(--primary);
-      box-shadow:none;
-    }
+    .btn{padding:10px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:900; background:linear-gradient(120deg,#3b82f6,#60a5fa); color:#fff; box-shadow:0 10px 22px rgba(59,130,246,.25)}
+    .btn-outline{background:#fff; color:var(--primary); border:2px solid var(--primary); box-shadow:none}
     .note{font-size:12px; color:var(--muted)}
-    .err{display:none; margin-top:6px; color:#ef4444; font-size:13px; }
-
-    /* Quick Results */
-    .cards{
-      display:grid; gap:12px; grid-template-columns:repeat(3, minmax(180px,1fr));
-    }
-    @media (max-width:900px){ .cards{grid-template-columns:repeat(2, minmax(180px,1fr))} }
-    @media (max-width:600px){ .cards{grid-template-columns:1fr} }
-
-    .card{
-      border:1px solid var(--border); border-radius: 16px; background:#ffffff;
-      padding:14px; box-shadow: var(--shadow-md);
-    }
-    .k{font-size:12px; color:var(--muted)}
-    .v{font-size:24px; font-weight:900; color:#0b1020; margin-top:4px}
-    .ok{color:var(--success)} .warn{color:var(--warn)}
-
-    /* Data table */
-    .table-wrap{overflow:auto; border-radius: 14px; border:1px solid var(--border); background:#fff; box-shadow: var(--shadow-md)}
-    table{width:100%; border-collapse:collapse; min-width:650px}
+    .err{display:none; margin-top:6px; color:#ef4444; font-size:13px}
+    .cards{display:grid; gap:12px; grid-template-columns:repeat(3,minmax(180px,1fr))}
+    @media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(180px,1fr))}}
+    @media (max-width:600px){.cards{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border); border-radius:16px; background:#fff; padding:14px; box-shadow:var(--shadow2)}
+    .k{font-size:12px; color:var(--muted)} .v{font-size:24px; font-weight:900; color:var(--fg); margin-top:4px}
+    .chip{display:inline-block; padding:2px 8px; border-radius:999px; background:#eff6ff; border:1px solid #dbeafe; color:#1d4ed8; font-size:12px}
+    .table-wrap{overflow:auto; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow2)}
+    table{width:100%; border-collapse:collapse; min-width:680px}
     th,td{padding:12px; border-bottom:1px solid var(--border); text-align:center}
     th{background:#f7f9ff; color:#374151; font-size:13px}
-
-    /* Footer disclaimer */
-    footer{
-      margin:22px auto 28px; max-width:1100px; padding:14px 16px;
-      background:#fff; border:1px dashed #c7d2fe; color:#1f2937;
-      border-radius: 16px; box-shadow: var(--shadow-md);
-      line-height:1.8; font-size:13px;
-    }
+    footer{margin:22px auto 28px; max-width:1100px; padding:14px 16px; background:#fff; border:1px dashed #c7d2fe; color:#1f2937; border-radius:16px; box-shadow:var(--shadow2); line-height:1.8; font-size:13px}
     footer strong{font-weight:900}
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="hero">
-      <div class="logo">
-        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
-          <defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient></defs>
-          <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" stroke="url(#g)" stroke-width="1.6" fill="none"/>
-        </svg>
-      </div>
-      <div>
-        <h1>GeoCalc — محاسبه‌گر گمانه / چاهک گود / آزمایشات برجا (V7)</h1>
-        <div class="tag">نسخه‌ی سبک و دقیق برای نمایش روی GitHub Pages</div>
-      </div>
-    </div>
-  </header>
+  <header><div class="wrap"><h1>GeoCalc — محاسبه‌گر گمانه / چاهک گود / آزمایشات برجا (V7)</h1></div></header>
 
   <main class="wrap">
     <div class="grid">
-      <!-- Inputs Section -->
+      <!-- Inputs -->
       <section class="section sec-inputs">
         <div class="sec-header">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h16" stroke="#334155" stroke-width="2" stroke-linecap="round"/></svg>
@@ -171,36 +69,11 @@
         </div>
         <div class="sec-body">
           <div class="inputs">
-            <div>
-              <label for="S">S — سطح اشغال (m²)</label>
-              <div class="control">
-                <input id="S" placeholder="مثلاً 2500" />
-                <span class="suffix">m²</span>
-              </div>
-            </div>
-            <div>
-              <label for="D">D — عمق گود، Dmax (m)</label>
-              <div class="control">
-                <input id="D" placeholder="مثلاً 27" />
-                <span class="suffix">m</span>
-              </div>
-            </div>
-            <div>
-              <label for="B">B — عرض مؤثر سطح اشغال (m)</label>
-              <div class="control">
-                <input id="B" placeholder="مثلاً 22" />
-                <span class="suffix">m</span>
-              </div>
-            </div>
-            <div>
-              <label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label>
-              <div class="control">
-                <input id="F" placeholder="مثلاً 12" />
-                <span class="suffix">طبقه</span>
-              </div>
-            </div>
+            <div><label for="S">S — سطح اشغال (m²)</label><div class="control"><input id="S" placeholder="مثلاً 2500" /><span class="suffix">m²</span></div></div>
+            <div><label for="D">D — عمق گود، Dmax (m)</label><div class="control"><input id="D" placeholder="مثلاً 27" /><span class="suffix">m</span></div></div>
+            <div><label for="B">B — عرض مؤثر سطح اشغال (m)</label><div class="control"><input id="B" placeholder="مثلاً 22" /><span class="suffix">m</span></div></div>
+            <div><label for="F">F — تعداد طبقات/سقف‌های سازه‌ای</label><div class="control"><input id="F" placeholder="مثلاً 12" /><span class="suffix">طبقه</span></div></div>
           </div>
-
           <div class="row">
             <button id="calc" class="btn">محاسبه</button>
             <button id="reset" class="btn btn-outline">ریست</button>
@@ -210,14 +83,13 @@
         </div>
       </section>
 
-      <!-- Quick Results Section -->
+      <!-- Quick Results -->
       <section class="section sec-results">
         <div class="sec-header">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6" stroke="#065f46" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
           <h2 class="sec-title">نتایج سریع</h2>
         </div>
         <div class="sec-body">
-          <p class="sec-muted">اعداد به‌صورت زنده با تغییر ورودی‌ها به‌روز می‌شوند.</p>
           <div class="cards">
             <div class="card"><div class="k">عمق از تراز شروع حفاری</div><div class="v" id="v_start">–</div></div>
             <div class="card"><div class="k">عمق از تراز زیرِپی</div><div class="v" id="v_found">–</div></div>
@@ -227,11 +99,15 @@
             <div class="card"><div class="k">آزمایش بارگذاری صفحه (تعداد)</div><div class="v" id="v_plate">–</div></div>
             <div class="card"><div class="k">دان‌هول (در صورت F≥11)</div><div class="v" id="v_dh">–</div></div>
           </div>
+          <p class="note" style="margin-top:10px">
+            الزام زیرجدول: حداقل یک گمانه باید <span class="chip">۳۰ متر زیرِ تراز فونداسیون</span> باشد.
+            طرح عمق گمانه‌ها: <span id="planChip" class="chip">—</span>
+          </p>
         </div>
       </section>
     </div>
 
-    <!-- Data Details Section -->
+    <!-- Data details -->
     <section class="section sec-table" style="margin-top:18px">
       <div class="sec-header">
         <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 5v14M16 5v14M4 9h16M4 15h16" stroke="#1d4ed8" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
@@ -248,92 +124,86 @@
     </section>
   </main>
 
-  <!-- Disclaimer -->
   <footer>
     این محاسبه‌گر، توسط گروه <strong>رستا</strong> صرفاً بعنوان راهنما برای شرکت‌های خدمات آزمایشگاهی استان تهران تهیه شده است و
     وظیفه کنترل صحت و سقم اطلاعات بر عهده <strong>مسئول فنی شرکت</strong> می‌باشد.
   </footer>
 
   <script>
-    /* ===== Persian/Arabic digits & commas → Number ===== */
-    const faDigits=/[۰-۹]/g, arDigits=/[٠-٩]/g;
-    const maps = { fa:{'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵':5,'۶':6,'۷':7,'۸':8,'۹':9},
-                   ar:{'٠':0,'١':1,'٢':2,'٣':3,'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9} };
-    function toNumber(val){
-      if(val==null) return NaN;
-      let s=String(val).trim().replace(/\s+/g,'').replace(/,/g,'').replace(/٬/g,'');
-      s=s.replace(faDigits,d=>maps.fa[d]).replace(arDigits,d=>maps.ar[d]);
-      return Number(s);
-    }
+    /* Persian/Arabic digits → number */
+    const fa=/[۰-۹]/g, ar=/[٠-٩]/g;
+    const maps={fa:{'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵':5,'۶':6,'۷':7,'۸':8,'۹':9}, ar:{'٠':0,'١':1,'٢':2,'٣':3,'٤':4,'٥':5,'٦':6,'٧':7,'٨':8,'٩':9}};
+    function toNumber(v){ if(v==null) return NaN; let s=String(v).trim().replace(/\s+/g,'').replace(/,/g,'').replace(/٬/g,''); s=s.replace(fa,d=>maps.fa[d]).replace(ar,d=>maps.ar[d]); return Number(s); }
 
-    /* ===== V7 Logic ===== */
-    function kB(S){ return (S<=300)?2:(S<=1000?1.5:1); }
-    function N(S){ return (S>1000)? 2*Math.ceil((S-1000)/1000) : 0; }    // +2 per 1000 above 1000
-    function M(D){ return (D>20)? Math.ceil((D-20)/10) : 0; }            // +1 per 10 above 20
-    function boreholes(S){ return (S<=300?2:3) + N(S); }
-    function handshafts(S,D){
-      const n=N(S), m=M(D);
-      if(S<=300){ if(D>10) return 2; return 1; }
-      if(S<=1000){ if(D>20) return 3+m; if(D>10) return 3; return 2; }
-      if(D>20) return 3+n+m; if(D>10) return 3+n; return 2+n;
-    }
+    /* Core V7 */
+    function kB(S){return (S<=300)?2:(S<=1000?1.5:1);}
+    function N(S){return (S>1000)?2*Math.ceil((S-1000)/1000):0;}
+    function M(D){return (D>20)?Math.ceil((D-20)/10):0;}
+    function boreholes(S){return (S<=300?2:3)+N(S);}
+    function handshafts(S,D){const n=N(S),m=M(D); if(S<=300){ if(D>10) return 2; return 1; } if(S<=1000){ if(D>20) return 3+m; if(D>10) return 3; return 2; } if(D>20) return 3+n+m; if(D>10) return 3+n; return 2+n;}
     function insitu(D){ if(D<7) return 0; if(D<=10) return 1; return 2; }
-    function downhole(F,bh){ return (F>=11)? Math.ceil(bh/3) : 0; }
+    function downhole(F,bh){ return (F>=11)?Math.ceil(bh/3):0; }
 
-    /* ===== UI Hooks ===== */
+    /* Borehole depth plan: ensure ≥ (D + 30) from start for ≥1 BH */
+    function depthPlanFromStart(baseDepth, count, thresholdFromStart){
+      const arr=[]; for(let i=0;i<count;i++) arr.push(Number(baseDepth.toFixed(2)));
+      if(count>0){ arr[0] = Number(Math.max(baseDepth, thresholdFromStart).toFixed(2)); }
+      // summarize like "1×39 m، 2×27 m"
+      const map=new Map();
+      arr.forEach(d=>{const k=d.toFixed(2); map.set(k,(map.get(k)||0)+1);});
+      const summary=[...map.entries()].sort((a,b)=>Number(b[0])-Number(a[0])).map(([k,c])=>`${c}×${Number(k)} m`).join('، ');
+      const enforced = baseDepth < thresholdFromStart;
+      return {arr, summary, enforced, thresholdFromStart: Number(thresholdFromStart.toFixed(2))};
+    }
+
     const $=id=>document.getElementById(id);
     const inputs=['S','D','B','F'].map($);
-    const v_start=$('v_start'), v_found=$('v_found'), v_bh=$('v_bh'), v_hs=$('v_hs'),
-          v_shear=$('v_shear'), v_plate=$('v_plate'), v_dh=$('v_dh'), tb=$('tbody');
+    const els={start:$('v_start'), found:$('v_found'), bh:$('v_bh'), hs:$('v_hs'), shear:$('v_shear'), plate:$('v_plate'), dh:$('v_dh'), tb:$('tbody'), planChip:$('planChip')};
 
     function calc(){
-      const S=toNumber($('S').value), D=toNumber($('D').value),
-            B=toNumber($('B').value), F=toNumber($('F').value);
+      const S=toNumber($('S').value), D=toNumber($('D').value), B=toNumber($('B').value), F=toNumber($('F').value);
       if([S,D,B,F].some(x=>!isFinite(x)||x<0)) throw new Error("bad");
       const kb=kB(S);
-      const start=(kb*B + D).toFixed(2), found=(kb*B).toFixed(2);
+      const startBase=Number((kb*B + D).toFixed(2));
+      const found=Number((kb*B).toFixed(2));
       const bh=boreholes(S), hs=handshafts(S,D), t=insitu(D), dh=downhole(F,bh);
-      return {S,D,B,F,kb,start,found,bh,hs,shear:t,plate:t,dh,N:N(S),M:M(D)};
+      const thresholdFromStart = D + 30; // << اصلاح: 30 متر زیر تراز فونداسیون
+      const plan=depthPlanFromStart(startBase, bh, thresholdFromStart);
+      return {S,D,B,F,kb,start:startBase,found,bh,hs,shear:t,plate:t,dh,N:N(S),M:M(D), plan};
     }
 
     function render(){
       try{
         const r=calc(); $('err').style.display='none';
-        v_start.textContent=r.start+" m";
-        v_found.textContent=r.found+" m";
-        v_bh.textContent=r.bh;
-        v_hs.textContent=r.hs;
-        v_shear.textContent=r.shear;
-        v_plate.textContent=r.plate;
-        v_dh.textContent=r.dh;
+        els.start.textContent=r.start+" m"; els.found.textContent=r.found+" m";
+        els.bh.textContent=r.bh; els.hs.textContent=r.hs;
+        els.shear.textContent=r.shear; els.plate.textContent=r.plate; els.dh.textContent=r.dh;
 
-        const rows = [
+        els.planChip.textContent = r.plan.summary || '—';
+
+        const rows=[
           ["kB", r.kb, "بر حسب S"],
           ["N",  r.N,  "هر ۱۰۰۰m² بالای ۱۰۰۰ ⇒ +۲ گمانه"],
           ["M",  r.M,  "هر ۱۰m بالای ۲۰ ⇒ +۱ چاهک"],
-          ["عمق از تراز شروع حفاری", r.start+" m", "kB×B + D"],
-          ["عمق از تراز زیرِپی",     r.found+" m", "kB×B"],
-          ["حداقل تعداد گمانه‌ها",   r.bh, "طبق جدول + N پلّه‌ای"],
-          ["حداقل تعداد چاهک گود",   r.hs, "طبق جدول + M پلّه‌ای (اگر D>20)"],
-          ["آزمایش برش برجا (تعداد)", r.shear, "D<7→0 ، 7–10→1 ، >10→2"],
-          ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط"],
-          ["دان‌هول (در صورت F≥11)", r.dh, "ceil(گمانه/3)"]
+          ["عمق از تراز شروع حفاری (پایه)", r.start+" m", "kB×B + D"],
+          ["عمق از تراز زیرِپی",           r.found+" m", "kB×B"],
+          ["حداقل تعداد گمانه‌ها",         r.bh, "طبق جدول + N"],
+          ["حداقل تعداد چاهک گود",         r.hs, "طبق جدول + M (در صورت D>20)"],
+          ["آستانه الزام (از شروع حفاری)", (r.D_plus_30??(r.plan.thresholdFromStart)).toFixed ? (r.plan.thresholdFromStart+" m") : (r.plan.thresholdFromStart+" m"), "D + 30 (۳۰ متر زیر تراز فونداسیون)"],
+          ["طرح عمق گمانه‌ها",             r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
+          ["آزمایش برش برجا (تعداد)",      r.shear, "D<7→0 ، 7–10→1 ، >10→2"],
+          ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط برش برجا"],
+          ["دان‌هول (در صورت F≥11)",       r.dh, "ceil(گمانه/3)"]
         ];
-        tb.innerHTML='';
-        rows.forEach(rw=>{
-          const tr=document.createElement('tr');
-          rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);});
-          tb.appendChild(tr);
-        });
-      }catch(e){
-        $('err').style.display='block';
-      }
+        els.tb.innerHTML='';
+        rows.forEach(rw=>{const tr=document.createElement('tr'); rw.forEach(c=>{const td=document.createElement('td'); td.textContent=c; tr.appendChild(td);}); els.tb.appendChild(tr);});
+      }catch(e){ $('err').style.display='block'; }
     }
 
     $('calc').addEventListener('click', render);
     $('reset').addEventListener('click', ()=>{ inputs.forEach(i=>i.value=''); render(); });
     inputs.forEach(i=> i.addEventListener('input', render));
-    render(); // first paint
+    render();
   </script>
 </body>
 </html>

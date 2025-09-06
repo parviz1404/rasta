@@ -1,4 +1,3 @@
-Parviz Abdi, [15/06/1404 08:56 ب.ظ]
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
@@ -7,31 +6,42 @@ Parviz Abdi, [15/06/1404 08:56 ب.ظ]
   <title>GeoCalc — محاسبه‌گر گمانه/چاهک/آزمایش برجا (V7)</title>
   <style>
     :root{
-      --bg:#f4f7fb; --fg:#0b1020; --muted:#6b7280;
-      --primary:#2563eb; --primary-2:#60a5fa; --success:#059669; --warn:#f59e0b;
+      --bg:#f6f8fc; --fg:#0b1020; --muted:#6b7280;
+      --primary:#2563eb; --primary-2:#60a5fa;
       --tint1:#eef4ff; --tint2:#ffffff; --tint3:#fafcff;
-      --border:#e6e8ef; --shadow:0 16px 40px rgba(2,6,23,.08); --shadow2:0 10px 24px rgba(2,6,23,.06);
-      --r-lg:18px; --r-md:12px;
+      --border:#e6e8ef;
+      --shadow:0 18px 44px rgba(2,6,23,.08);
+      --shadow2:0 10px 24px rgba(2,6,23,.06);
+      --r-lg:18px; --r-md:12px; --r-xl:22px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; background:
-        radial-gradient(900px 420px at 110% -10%, rgba(96,165,250,.15), transparent 60%),
-        radial-gradient(900px 420px at -10% 110%, rgba(125,211,252,.12), transparent 60%), #f4f7fb;
-      color:var(--fg); font:16px/1.65 "Vazirmatn","IRANSans",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      margin:0;
+      background:
+        radial-gradient(1100px 520px at 110% -10%, rgba(96,165,250,.18), transparent 60%),
+        radial-gradient(900px 520px at -10% 120%, rgba(125,211,252,.14), transparent 60%),
+        var(--bg);
+      color:var(--fg);
+      font:16px/1.7 "Vazirmatn","IRANSans",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
     }
-    header{background:linear-gradient(120deg,var(--primary),var(--primary-2)); color:#fff; padding:18px 20px; box-shadow:var(--shadow)}
-    header h1{margin:0; font-size:19px; font-weight:900}
+    header{
+      background:linear-gradient(120deg,var(--primary),var(--primary-2));
+      color:#fff; padding:18px 20px; box-shadow:var(--shadow)
+    }
+    header h1{margin:0; font-size:20px; font-weight:900}
     .wrap{max-width:1100px; margin:22px auto; padding:0 16px}
+
     .grid{display:grid; gap:18px; grid-template-columns:1.05fr .95fr}
     @media (max-width:990px){.grid{grid-template-columns:1fr}}
-    .section{border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow)}
-    .sec-header{display:flex; gap:10px; align-items:center; padding:12px 16px; background:#fff8; backdrop-filter:blur(4px); border-bottom:1px solid var(--border)}
-    .sec-title{margin:0; font-size:16px; font-weight:900; color:#1f2937}
+
+    .section{border:1px solid var(--border); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--shadow); background:#fff}
+    .sec-header{display:flex; gap:10px; align-items:center; padding:12px 16px; background:linear-gradient(180deg,#fff,#f9fbff); border-bottom:1px solid var(--border)}
+    .sec-title{margin:0; font-size:17px; font-weight:900; color:#111827}
     .sec-body{padding:16px}
     .sec-inputs{background:var(--tint1)}
     .sec-results{background:var(--tint2)}
     .sec-table{background:var(--tint3)}
+
     .inputs{display:grid; gap:12px; grid-template-columns:repeat(2,minmax(220px,1fr))}
     @media (max-width:700px){.inputs{grid-template-columns:1fr}}
     label{display:block; font-size:12px; font-weight:800; color:#334155; margin:6px 2px}
@@ -41,8 +51,9 @@ Parviz Abdi, [15/06/1404 08:56 ب.ظ]
     .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
     .btn{padding:10px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:900; background:linear-gradient(120deg,#3b82f6,#60a5fa); color:#fff; box-shadow:0 10px 22px rgba(59,130,246,.25)}
     .btn-outline{background:#fff; color:var(--primary); border:2px solid var(--primary); box-shadow:none}
-    .note{font-size:12px; color:#64748b}
+    .note{font-size:12px; color:var(--muted)}
     .err{display:none; margin-top:6px; color:#ef4444; font-size:13px}
+
     .cards{display:grid; gap:12px; grid-template-columns:repeat(3,minmax(180px,1fr))}
     @media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(180px,1fr))}}
     @media (max-width:600px){.cards{grid-template-columns:1fr}}
@@ -50,14 +61,12 @@ Parviz Abdi, [15/06/1404 08:56 ب.ظ]
     .k{font-size:12px; color:var(--muted)} .v{font-size:24px; font-weight:900; color:var(--fg); margin-top:4px}
     .chip{display:inline-block; padding:2px 8px; border-radius:999px; background:#eff6ff; border:1px solid #dbeafe; color:#1d4ed8; font-size:12px}
 
-    /* جدول و جلوگیری از بیرون‌زدن عددها روی موبایل */
+    /* جدول: جلوگیری از بیرون‌زدن اعداد در موبایل */
     .table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:16px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow2)}
     table{width:100%; border-collapse:collapse; min-width:680px; table-layout:fixed}
     th,td{padding:12px; border-bottom:1px solid var(--border); text-align:center; overflow-wrap:anywhere; word-break:break-word}
     th{background:#f7f9ff; color:#374151; font-size:13px}
-
-Parviz Abdi, [15/06/1404 08:56 ب.ظ]
-td:nth-child(2){direction:ltr; text-align:left; white-space:nowrap;}
+    td:nth-child(2){direction:ltr; text-align:left; white-space:nowrap;} /* ستون مقدار */
 
     footer{margin:22px auto 28px; max-width:1100px; padding:14px 16px; background:#fff; border:1px dashed #c7d2fe; color:#1f2937; border-radius:16px; box-shadow:var(--shadow2); line-height:1.8; font-size:13px}
     footer strong{font-weight:900}
@@ -123,9 +132,7 @@ td:nth-child(2){direction:ltr; text-align:left; white-space:nowrap;}
       <div class="sec-body">
         <div class="table-wrap">
           <table>
-
-Parviz Abdi, [15/06/1404 08:56 ب.ظ]
-<thead><tr><th>شاخص</th><th>مقدار</th><th>توضیح</th></tr></thead>
+            <thead><tr><th>شاخص</th><th>مقدار</th><th>توضیح</th></tr></thead>
             <tbody id="tbody"></tbody>
           </table>
         </div>
@@ -198,9 +205,7 @@ Parviz Abdi, [15/06/1404 08:56 ب.ظ]
           ["حداقل تعداد گمانه‌ها",         r.bh, "طبق جدول + N"],
           ["حداقل تعداد چاهک گود",         r.hs, "طبق جدول + M (در صورت D>20)"],
           ["آستانه الزام (از شروع حفاری)", r.plan.thresholdFromStart+" m", "D + 30 (۳۰ متر زیر تراز فونداسیون)"],
-
-Parviz Abdi, [15/06/1404 08:56 ب.ظ]
-["طرح عمق گمانه‌ها",             r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
+          ["طرح عمق گمانه‌ها",             r.plan.summary, r.plan.enforced ? "اعمال الزام: ≥1 گمانه = D+30" : "پایه ≥ D+30 بود؛ تغییری لازم نشد"],
           ["آزمایش برش برجا (تعداد)",      r.shear, "D<7→0 ، 7–10→1 ، >10→2"],
           ["آزمایش بارگذاری صفحه (تعداد)", r.plate, "همان شرط برش برجا"],
           ["دان‌هول (در صورت F≥11)",       r.dh, "ceil(گمانه/3)"]
